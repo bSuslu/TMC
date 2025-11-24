@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace TMC._Project.Core.Framework.EventBus
+namespace _Project.Core.Framework.EventBus
 {
     public static class EventBus<T> where T : IEvent
     {

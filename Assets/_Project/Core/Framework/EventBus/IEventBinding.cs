@@ -1,6 +1,6 @@
 using System;
 
-namespace TMC._Project.Core.Framework.EventBus
+namespace _Project.Core.Framework.EventBus
 {
     public interface IEventBinding<T> where T : IEvent
     {
