@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 92c7da3cd9a07894a8624f9af63ae1c4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130881
+  packageName: Simple Selection History Lite
+  packageVersion: 1.2.0
+  assetPath: Assets/TRANS/Editor/SimpleSelectionHistory/SimpleSelectionHistoryMain.cs
+  uploadId: 642679
