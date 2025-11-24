@@ -1,6 +1,7 @@
 using System;
+using _Project.Core.Framework.EventBus.Interfaces;
 
-namespace _Project.Core.Framework.EventBus
+namespace _Project.Core.Framework.EventBus.Implementations
 {
     public class EventBinding<T> : IEventBinding<T> where T : IEvent
     {

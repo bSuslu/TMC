@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using _Project.Core.Framework.EventBus.Implementations;
+using _Project.Core.Framework.EventBus.Interfaces;
 
 namespace _Project.Core.Framework.EventBus
 {

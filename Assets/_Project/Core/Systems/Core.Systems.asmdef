@@ -1,0 +1,19 @@
+{
+    "name": "Core.Systems",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ca3d9a890ea9240ad8a0ede733ac349b",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:ae54f7024412f440aa5ad792255d4779",
+        "GUID:029c1c1b674aaae47a6841a0b89ad80e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
