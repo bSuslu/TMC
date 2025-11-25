@@ -4,12 +4,12 @@ namespace _Project.Core.Systems.SceneSystem.Events
 {
     public struct LoadSceneRequestEvent : IEvent
     {
-        public GameScene Scene { get; set; }
+        public SceneType SceneType { get; set; }
         public bool Reload { get; set; }
 
-        public LoadSceneRequestEvent(GameScene scene, bool reload = false)
+        public LoadSceneRequestEvent(SceneType sceneType, bool reload = false)
         {
-            Scene = scene;
+            SceneType = sceneType;
             Reload = reload;
         }
     }

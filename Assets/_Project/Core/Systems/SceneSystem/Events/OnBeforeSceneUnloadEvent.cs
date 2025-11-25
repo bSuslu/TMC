@@ -4,11 +4,11 @@ namespace _Project.Core.Systems.SceneSystem.Events
 {
     public struct OnBeforeSceneUnloadEvent : IEvent
     {
-        public GameScene Scene { get; set; }
+        public SceneType SceneType { get; set; }
 
-        public OnBeforeSceneUnloadEvent(GameScene scene)
+        public OnBeforeSceneUnloadEvent(SceneType sceneType)
         {
-            Scene = scene;
+            SceneType = sceneType;
         }
     }
 }

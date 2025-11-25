@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using _Project.Core.Framework.EventBus;
 using _Project.Core.Framework.EventBus.Implementations;
+using _Project.Core.Systems.LoadingSystem.Interfaces;
 using _Project.Core.Systems.SceneSystem.Events;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -9,11 +10,11 @@ using UnityEngine.SceneManagement;
 
 namespace _Project.Core.Systems.SceneSystem
 {
-    public class SceneService : IDisposable
+    public class SceneService : IAsyncService
     {
-        private readonly GameScene _firstSceneToLoad = GameScene.MainMenuScene;
+        private readonly SceneType _firstSceneTypeToLoad = SceneType.MainMenu;
 
-        private GameScene _currentScene;
+        private SceneType _currentSceneType;
         private bool _isLoading;
         private readonly HashSet<string> _cachedSceneNames = new();
 
@@ -26,32 +27,28 @@ namespace _Project.Core.Systems.SceneSystem
             _loadSceneRequestEventBinding = new EventBinding<LoadSceneRequestEvent>(OnLoadSceneRequest);
             EventBus<LoadSceneRequestEvent>.Subscribe(_loadSceneRequestEventBinding);
 
-            Initialize().Forget();
         }
-
-        private async UniTask Initialize()
+        
+        public async UniTask InitializeAsync()
         {
-            await LoadFirstScene();
-        }
-
-        private async UniTask LoadFirstScene()
-        {
-            await LoadSceneAsync(_firstSceneToLoad);
+            Debug.Log("Initializing SceneService");
+            await LoadSceneAsync(_firstSceneTypeToLoad);
+            Debug.Log("SceneService Initialized");
         }
         
         private void OnLoadSceneRequest(LoadSceneRequestEvent loadSceneRequestEvent)
         {
             if (loadSceneRequestEvent.Reload)
             {
-                ReloadSceneAsync(loadSceneRequestEvent.Scene).Forget();
+                ReloadSceneAsync(loadSceneRequestEvent.SceneType).Forget();
             }
             else
             {
-                LoadScene(loadSceneRequestEvent.Scene);
+                LoadScene(loadSceneRequestEvent.SceneType);
             }
         }
 
-        private async UniTask ReloadSceneAsync(GameScene sceneKey)
+        private async UniTask ReloadSceneAsync(SceneType sceneTypeKey)
         {
             if (_isLoading)
             {
@@ -59,13 +56,13 @@ namespace _Project.Core.Systems.SceneSystem
                 return;
             }
 
-            EventBus<OnBeforeSceneUnloadEvent>.Publish(new OnBeforeSceneUnloadEvent(sceneKey));
+            EventBus<OnBeforeSceneUnloadEvent>.Publish(new OnBeforeSceneUnloadEvent(sceneTypeKey));
             _isLoading = true;
 
-            string sceneName = GetSceneName(sceneKey);
+            string sceneName = GetSceneName(sceneTypeKey);
 
 
-            EventBus<SceneTransitionStartedEvent>.Publish(new SceneTransitionStartedEvent(sceneKey));
+            EventBus<SceneTransitionStartedEvent>.Publish(new SceneTransitionStartedEvent(sceneTypeKey));
             // unload current scene
             await SceneManager.UnloadSceneAsync(sceneName);
 
@@ -76,40 +73,40 @@ namespace _Project.Core.Systems.SceneSystem
                 Debug.LogError($"[Scene Error] Failed to reload scene '{sceneName}'.");
                 _isLoading = false;
 
-                EventBus<SceneTransitionCompletedEvent>.Publish(new SceneTransitionCompletedEvent(sceneKey));
+                EventBus<SceneTransitionCompletedEvent>.Publish(new SceneTransitionCompletedEvent(sceneTypeKey));
                 return;
             }
 
             await asyncLoad.ToUniTask();
-            _currentScene = sceneKey;
+            _currentSceneType = sceneTypeKey;
             _isLoading = false;
 
-            EventBus<SceneTransitionCompletedEvent>.Publish(new SceneTransitionCompletedEvent(sceneKey));
+            EventBus<SceneTransitionCompletedEvent>.Publish(new SceneTransitionCompletedEvent(sceneTypeKey));
         }
 
-        private void LoadScene(GameScene sceneKey)
+        private void LoadScene(SceneType sceneTypeKey)
         {
-            if (_isLoading || _currentScene == sceneKey)
+            if (_isLoading || _currentSceneType == sceneTypeKey)
             {
-                Debug.LogWarning($"Scene '{GetSceneName(sceneKey)}' is already loading or loaded.");
+                Debug.LogWarning($"Scene '{GetSceneName(sceneTypeKey)}' is already loading or loaded.");
                 return;
             }
 
-            EventBus<OnBeforeSceneUnloadEvent>.Publish(new OnBeforeSceneUnloadEvent(sceneKey));
+            EventBus<OnBeforeSceneUnloadEvent>.Publish(new OnBeforeSceneUnloadEvent(sceneTypeKey));
 
-            LoadSceneAsync(sceneKey).Forget();
+            LoadSceneAsync(sceneTypeKey).Forget();
         }
         
-        private async UniTask LoadSceneAsync(GameScene sceneKey)
+        private async UniTask LoadSceneAsync(SceneType sceneTypeKey)
         {
             _isLoading = true;
 
-            EventBus<SceneTransitionStartedEvent>.Publish(new SceneTransitionStartedEvent(sceneKey));
+            EventBus<SceneTransitionStartedEvent>.Publish(new SceneTransitionStartedEvent(sceneTypeKey));
 
-            string sceneName = GetSceneName(sceneKey);
+            string sceneName = GetSceneName(sceneTypeKey);
 
             await UniTask.Delay(400);
-            await CleanupScenes(sceneKey);
+            await CleanupScenes(sceneTypeKey);
 
             AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             if (asyncLoad == null)
@@ -117,25 +114,25 @@ namespace _Project.Core.Systems.SceneSystem
                 Debug.LogError($"[Scene Error] Failed to load scene '{sceneName}'.");
                 _isLoading = false;
 
-                EventBus<SceneTransitionCompletedEvent>.Publish(new SceneTransitionCompletedEvent(sceneKey));
+                EventBus<SceneTransitionCompletedEvent>.Publish(new SceneTransitionCompletedEvent(sceneTypeKey));
                 return;
             }
 
             await asyncLoad.ToUniTask();
-            _currentScene = sceneKey;
+            _currentSceneType = sceneTypeKey;
             _isLoading = false;
 
-            EventBus<SceneTransitionCompletedEvent>.Publish(new SceneTransitionCompletedEvent(sceneKey));
+            EventBus<SceneTransitionCompletedEvent>.Publish(new SceneTransitionCompletedEvent(sceneTypeKey));
         }
 
-        private async UniTask CleanupScenes(GameScene loadedSceneKey)
+        private async UniTask CleanupScenes(SceneType loadedSceneTypeKey)
         {
             List<string> scenesToUnload = new List<string>();
 
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 UnityEngine.SceneManagement.Scene scene = SceneManager.GetSceneAt(i);
-                if (scene.name != GetSceneName(GameScene.PersistentScene) && scene.name != GetSceneName(loadedSceneKey))
+                if (scene.name != GetSceneName(SceneType.Persistent) && scene.name != GetSceneName(loadedSceneTypeKey))
                 {
                     scenesToUnload.Add(scene.name);
                 }
@@ -147,15 +144,15 @@ namespace _Project.Core.Systems.SceneSystem
             }
         }
 
-        private string GetSceneName(GameScene scene)
+        private string GetSceneName(SceneType sceneType)
         {
             // enum has exact scene name
-            string sceneName = scene.ToString();
+            string sceneName = sceneType.ToString();
 
             if (!IsSceneInBuildSettings(sceneName))
             {
                 Debug.LogError(
-                    $"[Scene Error] The scene '{sceneName}' mapped from enum '{scene}' is not added to Build Settings or the name is incorrect.");
+                    $"[Scene Error] The scene '{sceneName}' mapped from enum '{sceneType}' is not added to Build Settings or the name is incorrect.");
             }
 
             return sceneName;
@@ -178,5 +175,7 @@ namespace _Project.Core.Systems.SceneSystem
         {
             EventBus<LoadSceneRequestEvent>.Unsubscribe(_loadSceneRequestEventBinding);
         }
+
+        
     }
 }

@@ -8,7 +8,7 @@ namespace _Project.Core.Systems.SceneSystem.UI
     [RequireComponent(typeof(Button))]
     public class SceneTransitionButton : MonoBehaviour
     {
-        [SerializeField] private GameScene _scene;
+        [SerializeField] private SceneType _sceneType;
         
         private Button _button;
         
@@ -25,7 +25,7 @@ namespace _Project.Core.Systems.SceneSystem.UI
 
         private void OnButtonClicked()
         {
-            EventBus<LoadSceneRequestEvent>.Publish(new LoadSceneRequestEvent(_scene));
+            EventBus<LoadSceneRequestEvent>.Publish(new LoadSceneRequestEvent(_sceneType));
         }
     }
 }

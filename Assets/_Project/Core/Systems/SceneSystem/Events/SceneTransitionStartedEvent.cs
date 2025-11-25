@@ -4,11 +4,11 @@ namespace _Project.Core.Systems.SceneSystem.Events
 {
     public struct SceneTransitionStartedEvent : IEvent
     {
-        public GameScene Scene { get; set; }
+        public SceneType SceneType { get; set; }
 
-        public SceneTransitionStartedEvent(GameScene scene)
+        public SceneTransitionStartedEvent(SceneType sceneType)
         {
-            Scene = scene;
+            SceneType = sceneType;
         }
     }
 }
