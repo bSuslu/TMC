@@ -1,16 +1,130 @@
 using System;
 using System.IO;
+using System.Threading;
+using _Project.Core.Systems.LoadingSystem.Interfaces;
 using _Project.Core.Systems.SaveSystem.Interfaces;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
 namespace _Project.Core.Systems.SaveSystem.Services
 {
-    public class JsonSaveService : ISaveService
+    public class JsonSaveService : ISaveService, IAsyncService
     {
         private const string FolderName = "SaveData";
         private string FullFolderPath => Path.Combine(Application.persistentDataPath, FolderName);
-        public bool Save<T>(string relativePath, T data, bool overwrite, bool encrypted)
+        
+        private readonly CancellationTokenSource _cancellationTokenSource = new();
+        
+        public async UniTask InitializeAsync()
+        {
+            Debug.Log("Initializing JsonSaveService");
+            
+            // SaveData klasörünü oluştur
+            await EnsureSaveDirectoryAsync();
+            
+            Debug.Log("JsonSaveService Initialized");
+        }
+
+        public void Dispose()
+        {
+            _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource?.Dispose();
+        }
+
+        public async UniTask<bool> SaveAsync<T>(string relativePath, T data, bool overwrite = true, bool encrypted = false)
+        {
+            string path = GetFullPath(relativePath);
+            
+            try
+            {
+                // Overwrite kontrolü
+                if (File.Exists(path) && !overwrite)
+                {
+                    Debug.LogWarning($"File already exists at {path} and overwrite is false");
+                    return false;
+                }
+
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+
+                // Async write
+                string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                await File.WriteAllTextAsync(path, json, _cancellationTokenSource.Token);
+                
+                Debug.Log($"Data saved successfully to: {path}");
+                return true;
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log("Save operation cancelled");
+                return false;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Unable to save data due to: {e.Message}");
+                return false;
+            }
+        }
+
+        public async UniTask<(bool success, T data)> TryLoadAsync<T>(string relativePath, bool encrypted = false)
+        {
+            string path = GetFullPath(relativePath);
+
+            if (!File.Exists(path))
+            {
+                Debug.LogWarning($"File does not exist at path: {path}");
+                return (false, default);
+            }
+
+            try
+            {
+                // Async read
+                string json = await File.ReadAllTextAsync(path, _cancellationTokenSource.Token);
+                T data = JsonConvert.DeserializeObject<T>(json);
+                return (true, data);
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log("Load operation cancelled");
+                return (false, default);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"TryLoad failed: {e.Message}");
+                return (false, default);
+            }
+        }
+
+        public async UniTask<T> LoadAsync<T>(string relativePath, bool encrypted = false)
+        {
+            string path = GetFullPath(relativePath);
+
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException($"File does not exist at path: {path}");
+            }
+
+            try
+            {
+                // Async read
+                string json = await File.ReadAllTextAsync(path, _cancellationTokenSource.Token);
+                return JsonConvert.DeserializeObject<T>(json);
+            }
+            catch (OperationCanceledException)
+            {
+                throw new OperationCanceledException("Load operation was cancelled");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Unable to load data from file: {path} due to: {e.Message}");
+                throw;
+            }
+        }
+
+        public async UniTask DeleteAsync(string relativePath)
         {
             string path = GetFullPath(relativePath);
             
@@ -18,106 +132,61 @@ namespace _Project.Core.Systems.SaveSystem.Services
             {
                 if (File.Exists(path))
                 {
-                    Debug.Log($"Data already exists at path: {path}, creating new file");
-                    File.Delete(path);
+                    await UniTask.RunOnThreadPool(() => File.Delete(path));
+                    Debug.Log($"File deleted: {path}");
                 }
                 else
                 {
-                    Debug.LogWarning($"Data does not exist at path: {path}, creating new file");
+                    Debug.LogWarning($"File does not exist at path: {path}");
                 }
-            
-                using FileStream fs = File.Create(path);
-                fs.Close();
-                File.WriteAllText(path, JsonConvert.SerializeObject(data));
-                return true;
             }
             catch (Exception e)
             {
-                Debug.LogError($"Unable to save data due to: {e.Message} {e.StackTrace}");
-                return false;
-            }
-        }
-
-        public bool TryLoad<T>(string relativePath, out T data, bool encrypted = false)
-        {
-            string path = GetFullPath(relativePath);
-
-            if (!File.Exists(path))
-            {
-                data = default;
-                return false;
-            }
-
-            try
-            {
-                string json = File.ReadAllText(path);
-                data = JsonConvert.DeserializeObject<T>(json);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning($"TryLoad failed: {e.Message}");
-                data = default;
-                return false;
-            }
-        }
-
-        public T Load<T>(string relativePath, bool encrypted)
-        {
-            string path = GetFullPath(relativePath);
-
-            if (!File.Exists(path))
-            {
-                Debug.LogError($"File does not exist at path: {path}");
-                throw new FileNotFoundException($"File does not exist at path: {path}");
-            }
-
-            try
-            {
-                T data = JsonConvert.DeserializeObject<T>(File.ReadAllText(path));
-                return data;
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Unable to load data from file: {path} due to: {e.Message} {e.StackTrace}");
+                Debug.LogError($"Delete failed: {e.Message}");
                 throw;
             }
         }
 
-        public void Delete(string relativePath)
+        public async UniTask DeleteAllAsync()
         {
-            string path = GetFullPath(relativePath);
-            if (File.Exists(path))
+            string path = Path.Combine(Application.persistentDataPath, FolderName);
+            
+            try
             {
-                Debug.Log($"Deleting file: {path}");
-                File.Delete(path);
+                if (Directory.Exists(path))
+                {
+                    await UniTask.RunOnThreadPool(() => Directory.Delete(path, true));
+                    Debug.Log("All save data deleted");
+                }
+                else
+                {
+                    Debug.Log("No save data found.");
+                }
             }
-            else
+            catch (Exception e)
             {
-                Debug.LogWarning($"File does not exist at path: {path}");
+                Debug.LogError($"DeleteAll failed: {e.Message}");
+                throw;
             }
         }
 
-        public void DeleteAll()
+        public async UniTask<bool> ExistsAsync(string relativePath)
         {
-            string path = Path.Combine(Application.persistentDataPath,FolderName);
-            if (Directory.Exists(path))
-            {
-                Directory.Delete(path, true);
-            }
-            else
-            {
-                Debug.Log("No save data found.");
-            }
+            string path = GetFullPath(relativePath);
+            return await UniTask.RunOnThreadPool(() => File.Exists(path));
         }
-        
-        private string GetFullPath(string relativePath)
+
+
+        private async UniTask EnsureSaveDirectoryAsync()
         {
             if (!Directory.Exists(FullFolderPath))
             {
-                Directory.CreateDirectory(FullFolderPath);
+                await UniTask.RunOnThreadPool(() => Directory.CreateDirectory(FullFolderPath));
             }
+        }
 
+        private string GetFullPath(string relativePath)
+        {
             return Path.Combine(Application.persistentDataPath, FolderName, relativePath + ".json");
         }
     }

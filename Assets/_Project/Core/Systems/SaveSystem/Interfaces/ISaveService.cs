@@ -1,11 +1,15 @@
+using Cysharp.Threading.Tasks;
+
 namespace _Project.Core.Systems.SaveSystem.Interfaces
 {
     public interface ISaveService
     {
-        bool Save<T>(string relativePath,T data, bool overwrite = false, bool encrypted = false);
-        bool TryLoad<T>(string relativePath, out T data, bool encrypted = false);
-        T Load<T>(string relativePath, bool encrypted = false);
-        void Delete(string relativePath);
-        void DeleteAll();
+        // Async methods (NEW - önerilen)
+        UniTask<bool> SaveAsync<T>(string relativePath, T data, bool overwrite = true, bool encrypted = false);
+        UniTask<(bool success, T data)> TryLoadAsync<T>(string relativePath, bool encrypted = false);
+        UniTask<T> LoadAsync<T>(string relativePath, bool encrypted = false);
+        UniTask DeleteAsync(string relativePath);
+        UniTask DeleteAllAsync();
+        UniTask<bool> ExistsAsync(string relativePath);
     }
 } 
