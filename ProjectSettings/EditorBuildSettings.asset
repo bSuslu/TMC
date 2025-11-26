@@ -6,16 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Project/Scenes/PersistentScene.unity
+    path: Assets/_Project/Scenes/Persistent.unity
     guid: 00628aff0d97a42c5b833e5fed3b5b77
   - enabled: 1
-    path: Assets/_Project/Scenes/MainMenuScene.unity
+    path: Assets/_Project/Scenes/MainMenu.unity
     guid: 4ef590b56ec304f3988115d50c28a713
   - enabled: 1
-    path: Assets/_Project/Scenes/CityMatchScene.unity
+    path: Assets/_Project/Scenes/CityMatch.unity
     guid: 37f1bdf327fc54db89f293a7605e35b5
   - enabled: 1
-    path: Assets/_Project/Scenes/ObjectMatchScene.unity
+    path: Assets/_Project/Scenes/ObjectMatch.unity
     guid: f75bd93a28ce94d26b135479e0827fb9
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
