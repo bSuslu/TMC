@@ -11,10 +11,15 @@ namespace _Project.Core.Systems.SaveSystem.Services
 {
     public class JsonSaveService : ISaveService, IAsyncService
     {
-        private const string FolderName = "SaveData";
-        private string FullFolderPath => Path.Combine(Application.persistentDataPath, FolderName);
+        private const string k_folderName = "SaveData";
+        private readonly string _fullFolderPath;
         
         private readonly CancellationTokenSource _cancellationTokenSource = new();
+        
+        public JsonSaveService()
+        {
+            _fullFolderPath = Path.Combine(Application.persistentDataPath, k_folderName);
+        }
         
         public async UniTask InitializeAsync()
         {
@@ -24,12 +29,6 @@ namespace _Project.Core.Systems.SaveSystem.Services
             await EnsureSaveDirectoryAsync();
             
             Debug.Log("JsonSaveService Initialized");
-        }
-
-        public void Dispose()
-        {
-            _cancellationTokenSource?.Cancel();
-            _cancellationTokenSource?.Dispose();
         }
 
         public async UniTask<bool> SaveAsync<T>(string relativePath, T data, bool overwrite = true, bool encrypted = false)
@@ -149,7 +148,7 @@ namespace _Project.Core.Systems.SaveSystem.Services
 
         public async UniTask DeleteAllAsync()
         {
-            string path = Path.Combine(Application.persistentDataPath, FolderName);
+            string path = Path.Combine(Application.persistentDataPath, k_folderName);
             
             try
             {
@@ -179,15 +178,20 @@ namespace _Project.Core.Systems.SaveSystem.Services
 
         private async UniTask EnsureSaveDirectoryAsync()
         {
-            if (!Directory.Exists(FullFolderPath))
+            if (!Directory.Exists(_fullFolderPath))
             {
-                await UniTask.RunOnThreadPool(() => Directory.CreateDirectory(FullFolderPath));
+                await UniTask.RunOnThreadPool(() => Directory.CreateDirectory(_fullFolderPath));
             }
         }
 
         private string GetFullPath(string relativePath)
         {
-            return Path.Combine(Application.persistentDataPath, FolderName, relativePath + ".json");
+            return Path.Combine(Application.persistentDataPath, k_folderName, relativePath + ".json");
+        }
+        public void Dispose()
+        {
+            _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource?.Dispose();
         }
     }
 }
