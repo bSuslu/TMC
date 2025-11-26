@@ -8,6 +8,7 @@ namespace _Project.Core.Systems.CurrencySystem.Scripts
     [CreateAssetMenu(fileName = "CurrencySettings", menuName = "Settings/CurrencySettings")]
     public class CurrencySettings : ScriptableObject
     {
+        [field:SerializeField] public string DataPath { get; private set; }
         [SerializeField] private List<CurrencyConfig> _currencyConfigs;
         public Dictionary<CurrencyType, CurrencyConfig> CurrencyConfigs { get; private set; }
         

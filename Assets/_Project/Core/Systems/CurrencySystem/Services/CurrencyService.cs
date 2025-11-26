@@ -24,9 +24,8 @@ namespace _Project.Core.Systems.CurrencySystem.Services
 
         public CurrencyService()
         {
-            var settingsProvider = ServiceLocator.Global.Get<SettingsProvider>();
-            // _currencySettings = settingsProvider.CurrencySettings;
-            // _currencyDataPath = settingsProvider.DataPathSettings.CurrencyDataPath;
+            _currencySettings = ServiceLocator.Global.Get<CurrencySettings>();
+            _currencyDataPath = _currencySettings.DataPath;
             _saveService = ServiceLocator.Global.Get<ISaveService>();
         }
         
