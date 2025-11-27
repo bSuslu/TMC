@@ -1,5 +1,6 @@
 using _Project.Core.Framework.EventBus;
 using _Project.Core.Framework.EventBus.Implementations;
+using _Project.Core.Systems.LoadingSystem.Events;
 using _Project.Core.Systems.SceneSystem.Events;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -18,24 +19,24 @@ namespace _Project.Core.Systems.LoadingSystem.UI
         
         
         private EventBinding<SceneTransitionStartedEvent> _startBinding;
-        private EventBinding<SceneTransitionCompletedEvent> _completeBinding;
+        private EventBinding<ServicesReadyEvent> _servicesReadyBinding;
 
         private int _betweenScenesDelayMS;
         private void Awake()
         {
             _startBinding = new EventBinding<SceneTransitionStartedEvent>(OnTransitionStarted);
-            _completeBinding = new EventBinding<SceneTransitionCompletedEvent>(OnTransitionCompleted);
+            _servicesReadyBinding = new EventBinding<ServicesReadyEvent>(OnServicesReady);
             
             EventBus<SceneTransitionStartedEvent>.Subscribe(_startBinding);
-            EventBus<SceneTransitionCompletedEvent>.Subscribe(_completeBinding);
+            EventBus<ServicesReadyEvent>.Subscribe(_servicesReadyBinding);
             
-            _betweenScenesDelayMS = (int)(_betweenScenesDelay * 1000); // TODO: should wait service unload and load
+            // _betweenScenesDelayMS = (int)(_betweenScenesDelay * 1000); // TODO: should wait service unload and load
         }
 
         private void OnDestroy()
         {
             EventBus<SceneTransitionStartedEvent>.Unsubscribe(_startBinding);
-            EventBus<SceneTransitionCompletedEvent>.Unsubscribe(_completeBinding);
+            EventBus<ServicesReadyEvent>.Unsubscribe(_servicesReadyBinding);
         }
 
         private void OnTransitionStarted()
@@ -46,7 +47,7 @@ namespace _Project.Core.Systems.LoadingSystem.UI
             _canvasGroup.DOFade(1f, _fadeOutDuration).SetEase(_fadeOutEase).ToUniTask();
         }
 
-        private async void OnTransitionCompleted()
+        private async void OnServicesReady()
         {
             _canvasGroup.DOKill();
             _canvasGroup.alpha = 1f;

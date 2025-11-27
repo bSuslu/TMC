@@ -1297,7 +1297,7 @@ GameObject:
   m_Component:
   - component: {fileID: 857542336}
   - component: {fileID: 857542335}
-  - component: {fileID: 857542334}
+  - component: {fileID: 857542337}
   m_Layer: 0
   m_Name: 'ServiceLocator [Scene]'
   m_TagString: Untagged
@@ -1305,18 +1305,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &857542334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 857542333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08e936ce791c49c7a9e35d75fd65c512, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &857542335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1344,6 +1332,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &857542337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 857542333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500b44919afc4ff69e5c2398bcdc71a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1139648806
 GameObject:
   m_ObjectHideFlags: 0
@@ -2385,6 +2385,7 @@ GameObject:
   - component: {fileID: 1696155956}
   - component: {fileID: 1696155958}
   - component: {fileID: 1696155957}
+  - component: {fileID: 1696155959}
   m_Layer: 5
   m_Name: txt_timer
   m_TagString: Untagged
@@ -2510,6 +2511,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1696155955}
   m_CullTransparentMesh: 1
+--- !u!114 &1696155959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1696155955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef2fd6c421494030a7d4832961de2a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timerText: {fileID: 1696155957}
+  _prefix: 'Time: '
+  _normalColor: {r: 1, g: 1, b: 1, a: 1}
+  _warningColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _criticalColor: {r: 1, g: 0, b: 0, a: 1}
+  _warningThreshold: 30
+  _criticalThreshold: 10
 --- !u!1 &1815286698
 GameObject:
   m_ObjectHideFlags: 0
