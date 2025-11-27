@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using _Project.Core.Framework.EventBus;
 using _Project.Core.Framework.EventBus.Implementations;
@@ -8,7 +7,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace _Project.Core.Systems.SceneSystem
+namespace _Project.Core.Systems.SceneSystem.Services
 {
     public class SceneService : IAsyncService
     {
@@ -26,7 +25,6 @@ namespace _Project.Core.Systems.SceneSystem
 
             _loadSceneRequestEventBinding = new EventBinding<LoadSceneRequestEvent>(OnLoadSceneRequest);
             EventBus<LoadSceneRequestEvent>.Subscribe(_loadSceneRequestEventBinding);
-
         }
         
         public async UniTask InitializeAsync()
@@ -131,7 +129,7 @@ namespace _Project.Core.Systems.SceneSystem
 
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
-                UnityEngine.SceneManagement.Scene scene = SceneManager.GetSceneAt(i);
+                Scene scene = SceneManager.GetSceneAt(i);
                 if (scene.name != GetSceneName(SceneType.Persistent) && scene.name != GetSceneName(loadedSceneTypeKey))
                 {
                     scenesToUnload.Add(scene.name);

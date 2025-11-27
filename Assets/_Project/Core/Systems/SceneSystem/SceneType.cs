@@ -4,7 +4,6 @@ namespace _Project.Core.Systems.SceneSystem
     {
         Persistent,
         MainMenu,
-        CityMatch,
-        ObjectMatch,
+        CityMatch
     }
 }
