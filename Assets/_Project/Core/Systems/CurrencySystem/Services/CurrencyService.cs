@@ -68,6 +68,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
             }
         }
 
+        // Just showed for live ops backward compatibility
         private void SyncDataWithConfig(out bool isDataChanged)
         {
             isDataChanged = false;
@@ -84,7 +85,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
                 foreach (var missingType in missingTypesInData)
                 {
                     var config = _currencySettings.CurrencyConfigs[missingType];
-                    CurrencyDatas[missingType] = new CurrencyData(0);
+                    CurrencyDatas[missingType] = new CurrencyData(config.InitialAmount);
                     Debug.LogWarning($"[CurrencyService] Added missing currency type to data: {missingType}");
                 }
             }
