@@ -20,12 +20,11 @@ namespace _Project.Core.Systems.CurrencySystem.Services
 
         private readonly CurrencySettings _currencySettings;
         private readonly ISaveService _saveService;
-        private readonly string _currencyDataPath;
+        private const string k_saveKey = "currency_data";
 
         public CurrencyService()
         {
             _currencySettings = ServiceLocator.Global.Get<CurrencySettings>();
-            _currencyDataPath = _currencySettings.DataPath;
             _saveService = ServiceLocator.Global.Get<ISaveService>();
         }
         
@@ -38,7 +37,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
 
         private async UniTask InitializeCurrencyDatas()
         {
-            var (success, loadedData) = await _saveService.TryLoadAsync<Dictionary<CurrencyType, CurrencyData>>(_currencyDataPath);
+            var (success, loadedData) = await _saveService.TryLoadAsync<Dictionary<CurrencyType, CurrencyData>>(k_saveKey);
             
             if (success)
             {
@@ -131,7 +130,6 @@ namespace _Project.Core.Systems.CurrencySystem.Services
             SaveAsync().Forget();
         }
 
-        // Method to reward currency
         public void Add(CurrencyType currencyType, int amount)
         {
             if (!CurrencyDatas[currencyType].IsUnlocked) Unlock(currencyType);
@@ -174,7 +172,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
 
         private async UniTask SaveAsync()
         {
-            await _saveService.SaveAsync(_currencyDataPath, CurrencyDatas);
+            await _saveService.SaveAsync(k_saveKey, CurrencyDatas);
         }
 
         public Sprite GetCurrencyIcon(CurrencyType currencyType)
