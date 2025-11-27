@@ -65,8 +65,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
             foreach (var currencyConfigKvp in _currencySettings.CurrencyConfigs)
             {
                 CurrencyDatas.Add(currencyConfigKvp.Key,
-                    new CurrencyData(currencyConfigKvp.Value.UnlockedByDefault,
-                        currencyConfigKvp.Value.InitialAmount));
+                    new CurrencyData(currencyConfigKvp.Value.InitialAmount));
             }
         }
 
@@ -86,7 +85,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
                 foreach (var missingType in missingTypesInData)
                 {
                     var config = _currencySettings.CurrencyConfigs[missingType];
-                    CurrencyDatas[missingType] = new CurrencyData(config.UnlockedByDefault, 0);
+                    CurrencyDatas[missingType] = new CurrencyData(0);
                     Debug.LogWarning($"[CurrencyService] Added missing currency type to data: {missingType}");
                 }
             }

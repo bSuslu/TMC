@@ -6,9 +6,8 @@ namespace _Project.Core.Systems.CurrencySystem.Datas
         public bool IsUnlocked;
         public int Amount;
         
-        public CurrencyData(bool isUnlocked, int amount)
+        public CurrencyData(int amount)
         {
-            IsUnlocked = isUnlocked;
             Amount = amount;
         }
     }
