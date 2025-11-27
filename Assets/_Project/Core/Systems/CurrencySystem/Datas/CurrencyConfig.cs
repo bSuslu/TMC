@@ -1,10 +1,9 @@
-using System;
 using UnityEngine;
 
 namespace _Project.Core.Systems.CurrencySystem.Datas
 {
-    [Serializable]
-    public struct CurrencyConfig 
+    [CreateAssetMenu(fileName = "CurrencyConfig", menuName = "SO/Currency/Config")]
+    public class CurrencyConfig : ScriptableObject
     {
         [field: SerializeField] public CurrencyType Type { get; private set; }
         [field: SerializeField] public bool UnlockedByDefault { get; private set; }
