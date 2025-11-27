@@ -41,6 +41,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
             else
             {
                 CreateDefaultLevelData();
+                await SaveAsync();
             }
         }
 
@@ -89,7 +90,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
             UnlockNextLevel();
 
             // Save et
-            await SaveLevelData();
+            await SaveAsync();
 
             Debug.Log($"Level {CurrentLevelId} completed! Score: {score}, Stars: {stars}");
         }
@@ -118,7 +119,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
             }
         }
 
-        private async UniTask SaveLevelData()
+        private async UniTask SaveAsync()
         {
             await _saveService.SaveAsync(k_saveKey, _levelData);
         }
