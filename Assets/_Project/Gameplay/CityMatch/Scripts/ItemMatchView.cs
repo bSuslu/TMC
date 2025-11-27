@@ -11,12 +11,8 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts
             itemMatchSlotView = null;
             foreach (var slot in Slots)
             {
-                // TODO: Better way to null check
-                if (slot.ItemImage.sprite == null)
-                {
-                    itemMatchSlotView = slot;
-                    return true;
-                }
+                itemMatchSlotView = slot;
+                return true;
             }
             return false;
         }
