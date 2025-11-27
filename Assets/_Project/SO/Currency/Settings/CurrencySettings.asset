@@ -12,9 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af62fe9309c443859a497d9db745e356, type: 3}
   m_Name: CurrencySettings
   m_EditorClassIdentifier: 
-  <DataPath>k__BackingField: currency
   _currencyConfigs:
-  - <Type>k__BackingField: 1
-    <UnlockedByDefault>k__BackingField: 1
-    <InitialAmount>k__BackingField: 0
-    <Icon>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 11400000, guid: 2d080a67957ed471f9222a5a382ba16b, type: 2}
