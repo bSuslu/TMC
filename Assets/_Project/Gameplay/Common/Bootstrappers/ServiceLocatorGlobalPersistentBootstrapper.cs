@@ -8,7 +8,6 @@ using _Project.Core.Systems.LoadingSystem.Interfaces;
 using _Project.Core.Systems.SaveSystem.Interfaces;
 using _Project.Core.Systems.SaveSystem.Services;
 using _Project.Core.Systems.SceneSystem;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace TMC._Project.Gameplay.Common

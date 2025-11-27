@@ -1,3 +1,5 @@
+using TMC._Project.Core.Common.Utilities;
+using TMC._Project.Gameplay.Common;
 using UnityEngine;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts
@@ -8,6 +10,6 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts
         [field: SerializeField] public int Id { get; private set; }
         [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public Sprite Sprite { get; private set; }
-        [field: SerializeField] public GameObject Prefab { get; private set; }
+        [field: SerializeField] public SerializableDictionary<IsometricFaceDirection, GameObject> Prefab { get; private set; }
     }
 }
