@@ -46,7 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8e1500323e747a7a60faff0dd30f470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Config: {fileID: 11400000, guid: 6e6501b12f4594bb9871fea88221a0a2, type: 2}
+  <Config>k__BackingField: {fileID: 11400000, guid: 6e6501b12f4594bb9871fea88221a0a2, type: 2}
+  <SpriteRenderer>k__BackingField: {fileID: 303526584858394423}
 --- !u!212 &303526584858394423
 SpriteRenderer:
   m_ObjectHideFlags: 0
