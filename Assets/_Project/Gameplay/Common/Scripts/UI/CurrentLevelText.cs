@@ -12,7 +12,7 @@ namespace TMC._Project.Gameplay.Common.Scripts.UI
         private void Start()
         {
             LevelService levelService = ServiceLocator.Global.Get<LevelService>();
-            _levelText.text = levelService.CurrentLevelId.ToString();
+            _levelText.text = $"Level {levelService.ActiveLevelId.ToString()}";
         }
     }
 }
