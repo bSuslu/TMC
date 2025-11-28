@@ -1,5 +1,6 @@
 using TMC._Project.Core.Common.Utilities;
 using TMC._Project.Gameplay.Common;
+using TMC._Project.Gameplay.Common.Scripts.Enums;
 using UnityEngine;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts.Item

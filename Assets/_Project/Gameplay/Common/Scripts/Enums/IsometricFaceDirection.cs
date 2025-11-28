@@ -1,4 +1,4 @@
-namespace TMC._Project.Gameplay.Common
+namespace TMC._Project.Gameplay.Common.Scripts.Enums
 {
     public enum IsometricFaceDirection
     {

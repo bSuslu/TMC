@@ -14,9 +14,9 @@ using Cysharp.Threading.Tasks;
 using TMC._Project.Gameplay.CityMatch.Scripts.Level;
 using UnityEngine;
 
-namespace TMC._Project.Gameplay.Common.Bootstrappers
+namespace TMC._Project.Gameplay.Common.Scripts.Bootstrappers
 {
-    public class ServiceLocatorGlobalPersistentBootstrapper: ServiceLocatorGlobalBootstrapper
+    public class ServiceLocatorPersistentBootstrapper: ServiceLocatorGlobalBootstrapper
     {
         [SerializeField] private CurrencySettings _currencySettings;
         [SerializeField] private LevelSettings _levelSettings;
