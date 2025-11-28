@@ -16,7 +16,7 @@ namespace TMC._Project.Gameplay.Common.Scripts.Camera
         [SerializeField] private float _panSpeed = 1f;
         [SerializeField] private float _panOffset = 1f;
         [SerializeField] private bool _enablePan = true;
-        [SerializeField] private float _panSkillEdgeBuffer = 1f;
+        // [SerializeField] private float _panSkillEdgeBuffer = 1f;
         [SerializeField] private Vector2 _panLimitX = new(-10f, 10f);
         [SerializeField] private Vector2 _panLimitY = new(-10f, 10f);
 
