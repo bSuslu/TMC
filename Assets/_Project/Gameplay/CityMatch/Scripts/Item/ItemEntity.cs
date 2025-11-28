@@ -1,19 +1,15 @@
-using DG.Tweening;
+using TMC._Project.Gameplay.Common.ClickSystem;
 using UnityEngine;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
 {
     public class ItemEntity : MonoBehaviour, IClickable
     {
-        [SerializeField] private ItemMatchView _itemMatchView;
-        public int ItemId;
-        
-        public void OnClick()
+        public ItemConfig Config;
+
+        public void HandleClick()
         {
-            if (_itemMatchView.TryGetFirstEmptySlot(out var slot))
-            {
-                transform.DOMove(slot.transform.position, 0.5f);
-            }
+            Debug.Log($"Clicked on Item: {Config.Name}");
         }
     }
 }

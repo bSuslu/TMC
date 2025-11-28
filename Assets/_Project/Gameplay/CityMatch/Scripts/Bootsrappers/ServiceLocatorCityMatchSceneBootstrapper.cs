@@ -4,6 +4,7 @@ using _Project.Core.Framework.ServiceLocator.Bootstrappers;
 using _Project.Core.Systems.LoadingSystem.Events;
 using _Project.Core.Systems.TimeSystem.Interfaces;
 using _Project.Core.Systems.TimeSystem.Services;
+using TMC._Project.Gameplay.CityMatch.Scripts.Level;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts.Bootsrappers
 {
@@ -12,11 +13,13 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Bootsrappers
         protected override void Bootstrap()
         {
             base.Bootstrap();
-
-            float time = 40f;
+            
+            LevelService levelService = ServiceLocator.Global.Get<LevelService>();
+            float levelDuration = levelService.ActiveLevelConfig.DurationInSeconds;
+                
             var gameTimerService = new GameTimerService();
             ServiceLocator.ForSceneOf(this).Register<IGameTimerService>(gameTimerService);
-            gameTimerService.StartTimerAsync(time);
+            gameTimerService.StartTimerAsync(levelDuration);
             
             EventBus<ServicesReadyEvent>.Publish(new ServicesReadyEvent());
         }

@@ -7,15 +7,15 @@ using UnityEngine;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
 {
-    public class LevelService: IAsyncService
+    public class LevelService : IAsyncService
     {
         private readonly LevelSettings _levelSettings;
         private readonly ISaveService _saveService;
 
         private const string k_saveKey = "citymatch_levels";
         private Dictionary<int, LevelData> _levelData = new();
-        public LevelConfig CurrentLevelConfig { get; private set; }
-        public int CurrentLevelId { get; private set; } = 1;
+        public int ActiveLevelId { get; private set; }
+        public LevelConfig ActiveLevelConfig { get; private set; }
 
         public LevelService()
         {
@@ -43,6 +43,22 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
                 CreateDefaultLevelData();
                 await SaveAsync();
             }
+            
+            ActiveLevelId = GetLowestUnlockedLevelId();
+            ActiveLevelConfig = _levelSettings.GetLevelConfig(ActiveLevelId);
+        }
+        
+        private int GetLowestUnlockedLevelId()
+        {
+            foreach (var levelConfig in _levelSettings.LevelConfigs)
+            {
+                var data = GetLevelData(levelConfig.Id);
+                if (data.IsUnlocked)
+                    return data.Id;
+            }
+
+            // Hiçbir level unlock değilse, ilk config ID’sini döndür
+            return _levelSettings.LevelConfigs[0].Id;
         }
 
         private void CreateDefaultLevelData()
@@ -51,7 +67,8 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
 
             for (int i = 1; i <= _levelSettings.LevelCount; i++)
             {
-                _levelData[i] = new LevelData(i);
+                int configId = _levelSettings.LevelConfigs[i].Id;
+                _levelData[configId] = new LevelData(configId);
             }
         }
 
@@ -71,20 +88,19 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
                 return false;
             }
 
-            CurrentLevelId = levelId;
-            CurrentLevelConfig = levelConfig;
+            ActiveLevelId = levelId;
+            ActiveLevelConfig = levelConfig;
 
             Debug.Log($"Level {levelId} started!");
             return true;
         }
 
-        public async UniTask CompleteLevel(int score, int stars)
+        public async UniTask CompleteLevel()
         {
-            var levelData = GetLevelData(CurrentLevelId);
+            var levelData = GetLevelData(ActiveLevelId);
 
             // Update level data
             levelData.IsCompleted = true;
-            levelData.StarsEarned = Mathf.Max(levelData.StarsEarned, stars);
 
             // Sonraki level'i unlock et
             UnlockNextLevel();
@@ -92,7 +108,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
             // Save et
             await SaveAsync();
 
-            Debug.Log($"Level {CurrentLevelId} completed! Score: {score}, Stars: {stars}");
+            Debug.Log($"Level {ActiveLevelId} completed!");
         }
 
         public LevelData GetLevelData(int levelId)
@@ -105,13 +121,13 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
             return _levelData[levelId];
         }
 
-        public bool HasNextLevel() => CurrentLevelId < _levelSettings.LevelCount;
+        public bool HasNextLevel() => ActiveLevelId < _levelSettings.LevelCount;
 
         public bool IsLevelUnlocked(int levelId) => GetLevelData(levelId).IsUnlocked;
 
         private void UnlockNextLevel()
         {
-            int nextLevelId = CurrentLevelId + 1;
+            int nextLevelId = ActiveLevelId + 1;
             if (nextLevelId <= _levelSettings.LevelCount)
             {
                 var nextLevelData = GetLevelData(nextLevelId);
