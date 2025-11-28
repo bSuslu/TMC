@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: blue_building
   <Name>k__BackingField: Blue Building
-  <Sprite>k__BackingField: {fileID: 21300000, guid: 045d84b22091c45bf96da648f814590c, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 045d84b22091c45bf96da648f814590c, type: 3}
+  <ClickBehaviour>k__BackingField: {fileID: 11400000, guid: cf3010c9c8d0f48acbdecd023b29c5aa, type: 2}
   <Prefab>k__BackingField:
     _list:
     - Key: 0

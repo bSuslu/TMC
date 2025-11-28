@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: cafe
   <Name>k__BackingField: Cafe
-  <Sprite>k__BackingField: {fileID: 21300000, guid: e671acdd6ae4048858acb102a606e13f, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: e671acdd6ae4048858acb102a606e13f, type: 3}
+  <ClickBehaviour>k__BackingField: {fileID: 11400000, guid: cf3010c9c8d0f48acbdecd023b29c5aa, type: 2}
   <Prefab>k__BackingField:
     _list:
     - Key: 0

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: auto_shop
   <Name>k__BackingField: Auto Shop
-  <Sprite>k__BackingField: {fileID: 21300000, guid: 6958f9ffa777a4d08a976e1d5fe0aedd, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 6958f9ffa777a4d08a976e1d5fe0aedd, type: 3}
+  <ClickBehaviour>k__BackingField: {fileID: 11400000, guid: cf3010c9c8d0f48acbdecd023b29c5aa, type: 2}
   <Prefab>k__BackingField:
     _list:
     - Key: 0

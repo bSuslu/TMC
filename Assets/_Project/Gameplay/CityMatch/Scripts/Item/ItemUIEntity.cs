@@ -9,6 +9,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
     {
         public string ItemId{ get; private set; }
         [SerializeField] private Image _image;
+        [SerializeField] private RectTransform _rectTransform;
         
         private Sequence _sequence;
         
@@ -22,9 +23,8 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
         {
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
-            var rectTransform = GetComponent<RectTransform>();
-            _sequence.Append(rectTransform.DOAnchorPos(slotViewRelativePosition, 0.25f).SetEase(Ease.InBack));
-            _sequence.Join(rectTransform.DOSizeDelta(slotSize, 0.3f));
+            _sequence.Append(_rectTransform.DOAnchorPos(slotViewRelativePosition, 0.25f).SetEase(Ease.InBack));
+            _sequence.Join(_rectTransform.DOSizeDelta(slotSize, 0.3f));
             _sequence.OnComplete(() => { onFinishCallback?.Invoke(); });
         }
 

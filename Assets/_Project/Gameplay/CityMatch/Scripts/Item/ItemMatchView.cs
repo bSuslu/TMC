@@ -5,60 +5,44 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
 {
     public class ItemMatchView : MonoBehaviour
     {
+        [SerializeField] private Camera _camera;
         [field: SerializeField] private RectTransform _itemUIEntityParent;
-        [field: SerializeField] private Transform[] _slotsTransforms;
         [field: SerializeField] private ItemUIEntity _itemUIEntityPrefab;
-
-        private Camera _camera;
-        private ItemMatchSlot[] _slots;
+        [field: SerializeField] private ItemMatchSlot[] _slots;
         private Vector2 _slotSize;
+        private void Awake() => ItemEntity.OnItemClicked += OnItemEntityClicked;
+        private void OnDestroy() => ItemEntity.OnItemClicked -= OnItemEntityClicked;
 
-        private void Awake()
+        private void Start()
         {
-            ItemEntity.OnItemClicked += ItemUIEntity_OnItemClicked;
+            _slotSize = _slots[0].GetComponent<RectTransform>().sizeDelta;
         }
 
-        private void CreateAndInitializeSlots()
-        {
-            _camera = Camera.main;
-            _slotSize = _slotsTransforms[0].GetComponent<RectTransform>().sizeDelta;
-            _slots = new ItemMatchSlot[_slotsTransforms.Length];
-            for (int i = 0; i < _slotsTransforms.Length; i++)
-            {
-                var relativePosition =
-                    GetRelativeLocalPointInRectangle(_itemUIEntityParent, _slotsTransforms[i].position, _camera);
-                _slots[i] = new ItemMatchSlot(relativePosition);
-            }
-        }
+        private bool HasEmptySlot() => _slots.Any(slot => slot.IsEmpty);
 
-        private void ItemUIEntity_OnItemClicked(ItemEntity entity)
+        private void OnItemEntityClicked(ItemEntity entity)
         {
-            if (_slots == null)
-                CreateAndInitializeSlots();
-
-            if (!HasEmptySlot())
-                return;
+            if (!HasEmptySlot()) return;
 
             var slot = GetProperSlot(entity.Config.Id);
 
             var itemUIEntity = Instantiate(_itemUIEntityPrefab, _itemUIEntityParent);
-            itemUIEntity.SetIDAndSprite(entity.Config.Id, entity.Config.Sprite);
+            itemUIEntity.SetIDAndSprite(entity.Config.Id, entity.Config.Icon);
             slot.CurrentItemUIEntity = itemUIEntity;
 
-            itemUIEntity.transform.localPosition =
-                GetRelativeLocalPointInRectangle(_itemUIEntityParent, entity.Position, _camera);
+            itemUIEntity.transform.localPosition = GetRelativeLocalPointInRectangle(_itemUIEntityParent, entity.Position, _camera);
 
             var screenSize = GetItemUIScaleFromSprite(entity.Position, entity.SpriteRenderer);
             RectTransform rt = itemUIEntity.GetComponent<RectTransform>();
             rt.sizeDelta = new Vector2(Mathf.Abs(screenSize.x), Mathf.Abs(screenSize.y));
 
-            itemUIEntity.MoveToSlotFromWorld(slot.RelativePosition, _slotSize, MovementComplete);
+            Vector2 targetPosition = GetRelativeLocalPointInRectangle(_itemUIEntityParent, slot.transform.position, _camera);
+            itemUIEntity.MoveToSlotFromWorld(targetPosition, _slotSize, MovementComplete);
 
             entity.ClickSuccess();
         }
 
-        private Vector2 GetRelativeLocalPointInRectangle(RectTransform referenceRectTransform, Vector3 worldPosition,
-            Camera cam = null)
+        private Vector2 GetRelativeLocalPointInRectangle(RectTransform referenceRectTransform, Vector3 worldPosition, Camera cam = null)
         {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(referenceRectTransform,
                 RectTransformUtility.WorldToScreenPoint(cam, worldPosition), cam, out var localPoint);
@@ -74,7 +58,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
         {
             for (int i = 2; i < _slots.Length; i++)
             {
-                if (_slots[i].CurrentItemUIEntity == null) break;
+                if (_slots[i].IsEmpty) break;
 
                 if (_slots[i].ItemID == _slots[i - 1].ItemID && _slots[i - 1].ItemID == _slots[i - 2].ItemID)
                 {
@@ -99,7 +83,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
         {
             for (int i = 0; i < _slots.Length; i++)
             {
-                if (_slots[i].CurrentItemUIEntity == null)
+                if (_slots[i].IsEmpty)
                 {
                     return _slots[i];
                 }
@@ -139,19 +123,13 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
 
         private void MoveAllItemsToIndexPositions()
         {
-            for (int i = 0; i < _slots.Length; i++)
+            foreach (var slot in _slots)
             {
-                if (_slots[i].CurrentItemUIEntity == null) break;
-                var relativePosition = _slots[i].RelativePosition;
-                _slots[i].CurrentItemUIEntity.MoveToSlotFromWorld(relativePosition, _slotSize);
+                if (slot.IsEmpty) break;
+                
+                var relativePosition = GetRelativeLocalPointInRectangle(_itemUIEntityParent, slot.transform.position, _camera);
+                slot.CurrentItemUIEntity.MoveToSlotFromWorld(relativePosition, _slotSize);
             }
-        }
-
-        private bool HasEmptySlot() => _slots.Any(slot => slot.CurrentItemUIEntity == null);
-
-        private Vector3 GetRelativeLocalPosition(Transform slotTransform)
-        {
-            return _itemUIEntityParent.InverseTransformPoint(slotTransform.position);
         }
 
         private Vector3 GetItemUIScaleFromSprite(Vector3 worldPosition, SpriteRenderer spriteRenderer)
