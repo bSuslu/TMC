@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffd7af4ead1842bf805c9e57ec7afea8, type: 3}
-  m_Name: barn_red
+  m_Name: blue_building
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: barn_red
-  <Name>k__BackingField: Barn Red
-  <Sprite>k__BackingField: {fileID: 21300000, guid: 4937855665e794277b818e16cb791df1, type: 3}
+  <Id>k__BackingField: blue_building
+  <Name>k__BackingField: Blue Building
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 045d84b22091c45bf96da648f814590c, type: 3}
   <Prefab>k__BackingField:
     _list:
     - Key: 0
-      Value: {fileID: 4655871894259309370, guid: ec9def92e0f504710ae0fc385c16f15b, type: 3}
+      Value: {fileID: 4655871894259309370, guid: ba929e24e19014e22abdc97af9ca6013, type: 3}
     - Key: 1
-      Value: {fileID: 4655871894259309370, guid: a6b1e531f0a0745fdb517fae15df4ee7, type: 3}
+      Value: {fileID: 4655871894259309370, guid: 77f45588530f64b2991d3cc4701076ff, type: 3}
