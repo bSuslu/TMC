@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using _Project.Core.Framework.ServiceLocator;
 using _Project.Core.Systems.CurrencySystem.Datas;
 using _Project.Core.Systems.CurrencySystem.Interfaces;
-using _Project.Core.Systems.CurrencySystem.Scripts;
+using _Project.Core.Systems.CurrencySystem.Settings;
 using _Project.Core.Systems.LoadingSystem.Interfaces;
 using _Project.Core.Systems.SaveSystem.Interfaces;
 using Cysharp.Threading.Tasks;

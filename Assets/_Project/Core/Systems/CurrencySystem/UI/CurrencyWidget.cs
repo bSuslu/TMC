@@ -1,7 +1,7 @@
 using _Project.Core.Framework.ServiceLocator;
 using _Project.Core.Systems.CurrencySystem.Datas;
 using _Project.Core.Systems.CurrencySystem.Interfaces;
-using _Project.Core.Systems.CurrencySystem.Scripts;
+using _Project.Core.Systems.CurrencySystem.Settings;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
