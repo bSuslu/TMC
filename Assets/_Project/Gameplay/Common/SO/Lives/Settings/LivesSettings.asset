@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f83c636d7c4fee861bae728d093627, type: 3}
   m_Name: LivesSettings
   m_EditorClassIdentifier: 
-  StartLives: 5
-  MaxLives: 5
-  RegenTime: 3
+  <StartLives>k__BackingField: 5
+  <RegenTime>k__BackingField: 100
+  <MaxLives>k__BackingField: 5
