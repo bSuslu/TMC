@@ -37,18 +37,10 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
             rt.sizeDelta = new Vector2(Mathf.Abs(screenSize.x), Mathf.Abs(screenSize.y));
 
             int index = AddOrInsertItem(itemUIEntity);
-            
-            MoveUIItemToSlot(itemUIEntity, index).Forget();
-            
+            itemUIEntity.MoveToSlotFromWorld(_relativeSlotPositions[index], _slotSize, CheckMatch);
             UpdateItemPositions(index);
 
             entity.ClickSuccess();
-        }
-
-        private async UniTask MoveUIItemToSlot(ItemUIEntity itemUIEntity, int index)
-        {
-            await itemUIEntity.MoveToSlotFromWorld(_relativeSlotPositions[index], _slotSize);
-            CheckMatchAsync().Forget();
         }
 
         private int AddOrInsertItem(ItemUIEntity itemUIEntity)
@@ -80,6 +72,11 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
             return localPoint;
         }
 
+        private void CheckMatch()
+        {
+            // Debug.Log("Check Match");
+            _ = CheckMatchAsync();
+        }
 
         private async UniTask CheckMatchAsync()
         {
