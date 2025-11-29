@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
 {
-    public class LevelService : IAsyncService
+    public class LevelService : IAsyncService, ILevelService
     {
         private readonly LevelSettings _levelSettings;
         private readonly ISaveService _saveService;
@@ -30,7 +30,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
             Debug.Log("LevelService Initialized");
         }
 
-        private async UniTask LoadLevelData()
+        public async UniTask LoadLevelData()
         {
             var (success, savedData) = await _saveService.TryLoadAsync<Dictionary<int, LevelData>>(k_saveKey);
 
@@ -47,8 +47,8 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
             ActiveLevelId = GetLowestUnlockedLevelId();
             ActiveLevelConfig = _levelSettings.GetLevelConfig(ActiveLevelId);
         }
-        
-        private int GetLowestUnlockedLevelId()
+
+        public int GetLowestUnlockedLevelId()
         {
             foreach (var levelConfig in _levelSettings.LevelConfigs)
             {
@@ -61,11 +61,11 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
             return _levelSettings.LevelConfigs[0].Id;
         }
 
-        private void CreateDefaultLevelData()
+        public void CreateDefaultLevelData()
         {
             _levelData.Clear();
 
-            for (int i = 1; i <= _levelSettings.LevelCount; i++)
+            for (int i = 0; i < _levelSettings.LevelCount; i++)
             {
                 int configId = _levelSettings.LevelConfigs[i].Id;
                 _levelData[configId] = new LevelData(configId);
@@ -125,7 +125,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
 
         public bool IsLevelUnlocked(int levelId) => GetLevelData(levelId).IsUnlocked;
 
-        private void UnlockNextLevel()
+        public void UnlockNextLevel()
         {
             int nextLevelId = ActiveLevelId + 1;
             if (nextLevelId <= _levelSettings.LevelCount)
@@ -135,7 +135,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
             }
         }
 
-        private async UniTask SaveAsync()
+        public async UniTask SaveAsync()
         {
             await _saveService.SaveAsync(k_saveKey, _levelData);
         }
