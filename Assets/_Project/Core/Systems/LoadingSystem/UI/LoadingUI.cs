@@ -10,11 +10,11 @@ namespace _Project.Core.Systems.LoadingSystem.UI
 {
     public class LoadingUI : MonoBehaviour
     {
-        [SerializeField] private float _fadeOutDuration = 1f;
-        [SerializeField] private Ease _fadeOutEase = Ease.Linear;
-        [SerializeField] private float _fadeInDuration = 1f;
-        [SerializeField] private Ease _fadeInEase = Ease.Linear;
-        [SerializeField] private float _betweenScenesDelay = 1f;
+        [SerializeField] private float _fadeOutDuration = .3f;
+        [SerializeField] private Ease _fadeOutEase = Ease.OutSine;
+        [SerializeField] private float _fadeInDuration = .3f;
+        [SerializeField] private Ease _fadeInEase = Ease.OutSine;
+        [SerializeField] private float _betweenScenesDelay = .3f;
         [SerializeField] private CanvasGroup _canvasGroup;
         
         
@@ -30,7 +30,7 @@ namespace _Project.Core.Systems.LoadingSystem.UI
             EventBus<SceneTransitionStartedEvent>.Subscribe(_startBinding);
             EventBus<ServicesReadyEvent>.Subscribe(_servicesReadyBinding);
             
-            // _betweenScenesDelayMS = (int)(_betweenScenesDelay * 1000); // TODO: should wait service unload and load
+            _betweenScenesDelayMS = (int)(_betweenScenesDelay * 1000);
         }
 
         private void OnDestroy()
