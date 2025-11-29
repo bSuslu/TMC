@@ -1,7 +1,7 @@
 using System;
 using _Project.Core.Framework.EventBus;
 using TMC._Project.Gameplay.CityMatch.Scripts.Events;
-using TMC._Project.Gameplay.Common.ClickSystem;
+using TMC._Project.Gameplay.Common.Scripts.ClickSystem;
 using UnityEngine;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts.Item

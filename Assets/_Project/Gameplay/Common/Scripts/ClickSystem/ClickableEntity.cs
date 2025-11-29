@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TMC._Project.Gameplay.Common.ClickSystem
+namespace TMC._Project.Gameplay.Common.Scripts.ClickSystem
 {
     public class ClickableEntity: MonoBehaviour, IClickable
     {

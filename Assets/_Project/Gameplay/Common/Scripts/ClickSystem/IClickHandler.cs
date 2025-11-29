@@ -1,4 +1,4 @@
-namespace TMC._Project.Gameplay.Common.ClickSystem
+namespace TMC._Project.Gameplay.Common.Scripts.ClickSystem
 {
     public interface IClickHandler
     {

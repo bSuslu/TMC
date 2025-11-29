@@ -1,11 +1,11 @@
 using TMC._Project.Gameplay.CityMatch.Scripts.Item;
 using UnityEngine;
 
-namespace TMC._Project.Gameplay.Common.ClickSystem
+namespace TMC._Project.Gameplay.Common.Scripts.ClickSystem
 {
     public class ClickHandler : MonoBehaviour, IClickHandler
     {
-        [SerializeField] private Camera _camera;
+        [SerializeField] private UnityEngine.Camera _camera;
         [SerializeField] private ItemMatchView _itemMatchView;
         private readonly RaycastHit2D[] _results = new RaycastHit2D[10];
         private readonly ContactFilter2D _filter = new();

@@ -3,6 +3,7 @@ using _Project.Core.Framework.EventBus;
 using _Project.Core.Framework.EventBus.Implementations;
 using _Project.Core.Systems.LoadingSystem.Interfaces;
 using _Project.Core.Systems.SceneSystem.Events;
+using _Project.Core.Systems.SceneSystem.SO;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;

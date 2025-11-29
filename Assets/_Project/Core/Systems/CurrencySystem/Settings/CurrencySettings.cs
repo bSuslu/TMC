@@ -3,7 +3,7 @@ using System.Linq;
 using _Project.Core.Systems.CurrencySystem.Datas;
 using UnityEngine;
 
-namespace _Project.Core.Systems.CurrencySystem.Scripts
+namespace _Project.Core.Systems.CurrencySystem.Settings
 {
     [CreateAssetMenu(fileName = "CurrencySettings", menuName = "SO/Currency/Settings")]
     public class CurrencySettings : ScriptableObject

@@ -1,4 +1,5 @@
 using _Project.Core.Framework.EventBus.Interfaces;
+using _Project.Core.Systems.SceneSystem.SO;
 
 namespace _Project.Core.Systems.SceneSystem.Events
 {

@@ -1,5 +1,5 @@
 using TMC._Project.Core.Common.Utilities;
-using TMC._Project.Gameplay.Common.ClickSystem.ClickBehaviours;
+using TMC._Project.Gameplay.Common.Scripts.ClickSystem.ClickBehaviours.Base;
 using TMC._Project.Gameplay.Common.Scripts.Enums;
 using UnityEngine;
 
