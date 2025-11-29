@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8e1500323e747a7a60faff0dd30f470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Config>k__BackingField: {fileID: 11400000, guid: 55f18ad265471465688fd98ab57260bf, type: 2}
+  <Id>k__BackingField: blue_building
   <SpriteRenderer>k__BackingField: {fileID: 303526584858394423}
 --- !u!212 &303526584858394423
 SpriteRenderer:

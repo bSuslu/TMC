@@ -1,4 +1,5 @@
 using System;
+using TMC._Project.Gameplay.Common.Scripts.Enums;
 using UnityEngine;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts
@@ -8,6 +9,6 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts
     {
         public int ItemId;
         public Vector2 Position;
-        public bool IsMirror;
+        public IsometricFaceDirection FaceDirection;
     }
 }

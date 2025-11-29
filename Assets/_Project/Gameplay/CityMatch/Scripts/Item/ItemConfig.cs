@@ -1,6 +1,7 @@
 using TMC._Project.Core.Common.Utilities;
 using TMC._Project.Gameplay.Common.Scripts.ClickSystem.ClickBehaviours.Base;
 using TMC._Project.Gameplay.Common.Scripts.Enums;
+using UnityEditor;
 using UnityEngine;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
@@ -13,6 +14,18 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
         [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public ClickBehaviour ClickBehaviour { get; private set; }
         [field: SerializeField]
-        public SerializableDictionary<IsometricFaceDirection, GameObject> Prefab { get; private set; }
+        public SerializableDictionary<IsometricFaceDirection, ItemEntity> ItemEntities { get; private set; }
+
+        private void OnValidate()
+        {
+            foreach (var itemEntity in ItemEntities)
+            {
+                if (itemEntity.Value == null) continue;
+                itemEntity.Value.Id = Id;
+                EditorUtility.SetDirty(itemEntity.Value);
+            }
+            EditorUtility.SetDirty(this);
+            
+        }
     }
 }

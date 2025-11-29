@@ -29,7 +29,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
             if (!HasEmptySlot()) return;
 
             var itemUIEntity = Instantiate(_itemUIEntityPrefab, _itemUIEntityParent);
-            itemUIEntity.SetIDAndSprite(entity.Config.Id, entity.Config.Icon);
+            itemUIEntity.SetIDAndSprite(entity.Id, entity.Config.Icon);
             itemUIEntity.transform.localPosition = GetRelativeLocalPointInRectangle(_itemUIEntityParent, entity.Position, _camera);
 
             var screenSize = GetItemUIScaleFromSprite(entity.Position, entity.SpriteRenderer);

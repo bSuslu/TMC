@@ -11,6 +11,7 @@ using _Project.Core.Systems.SaveSystem.Interfaces;
 using _Project.Core.Systems.SaveSystem.Services;
 using _Project.Core.Systems.SceneSystem.Services;
 using Cysharp.Threading.Tasks;
+using TMC._Project.Gameplay.CityMatch.Scripts.Item;
 using TMC._Project.Gameplay.CityMatch.Scripts.Level;
 using TMC._Project.Gameplay.Common.Scripts.LivesSystem.Service;
 using TMC._Project.Gameplay.Common.Scripts.LivesSystem.Settings;
@@ -23,6 +24,7 @@ namespace TMC._Project.Gameplay.Common.Scripts.Bootstrappers
         [SerializeField] private CurrencySettings _currencySettings;
         [SerializeField] private LevelSettings _levelSettings;
         [SerializeField] private LivesSettings _livesSettings;
+        [SerializeField] private ItemSettings _itemSettings;
         
         private readonly List<IAsyncService> _asyncServices = new();
         
@@ -34,6 +36,8 @@ namespace TMC._Project.Gameplay.Common.Scripts.Bootstrappers
             ServiceLocator.Global.Register(_currencySettings);
             ServiceLocator.Global.Register(_levelSettings);
             ServiceLocator.Global.Register(_livesSettings);
+            _itemSettings.Initialize();
+            ServiceLocator.Global.Register(_itemSettings);
             
             var save = new JsonSaveService();
             ServiceLocator.Global.Register<ISaveService>(save);

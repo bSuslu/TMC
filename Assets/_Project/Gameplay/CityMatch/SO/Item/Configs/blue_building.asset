@@ -16,9 +16,9 @@ MonoBehaviour:
   <Name>k__BackingField: Blue Building
   <Icon>k__BackingField: {fileID: 21300000, guid: 045d84b22091c45bf96da648f814590c, type: 3}
   <ClickBehaviour>k__BackingField: {fileID: 11400000, guid: cf3010c9c8d0f48acbdecd023b29c5aa, type: 2}
-  <Prefab>k__BackingField:
+  <ItemEntities>k__BackingField:
     _list:
     - Key: 0
-      Value: {fileID: 4655871894259309370, guid: ba929e24e19014e22abdc97af9ca6013, type: 3}
+      Value: {fileID: 6915820845833191968, guid: ba929e24e19014e22abdc97af9ca6013, type: 3}
     - Key: 1
-      Value: {fileID: 4655871894259309370, guid: 77f45588530f64b2991d3cc4701076ff, type: 3}
+      Value: {fileID: 6915820845833191968, guid: 77f45588530f64b2991d3cc4701076ff, type: 3}

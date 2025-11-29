@@ -288,6 +288,7 @@ MonoBehaviour:
   _currencySettings: {fileID: 11400000, guid: d2e0539aa11744aa4bc6d772b0394c2f, type: 2}
   _levelSettings: {fileID: 11400000, guid: 62e1b7b35f40c4008be323c44e946a52, type: 2}
   _livesSettings: {fileID: 11400000, guid: 82e5cde6c91eb4634b60a93c4b69fe38, type: 2}
+  _itemSettings: {fileID: 11400000, guid: 9652dff731501470f9436c5747f894f1, type: 2}
 --- !u!114 &284510043
 MonoBehaviour:
   m_ObjectHideFlags: 0
