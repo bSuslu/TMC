@@ -30,12 +30,9 @@ namespace _Project.Core.Systems.CurrencySystem.UI
             else
             {
                 Debug.LogError($"Currency config not found for currency type: {_currencyType}");
+                
+                _currencyService.OnCurrencyAmountUpdated += OnCurrencyAmountUpdated;
             }
-        }
-
-        private void Start()
-        {
-            _currencyService.OnCurrencyAmountUpdated += OnCurrencyAmountUpdated;
         }
 
         private void OnDestroy()

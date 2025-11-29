@@ -12,6 +12,8 @@ using _Project.Core.Systems.SaveSystem.Services;
 using _Project.Core.Systems.SceneSystem.Services;
 using Cysharp.Threading.Tasks;
 using TMC._Project.Gameplay.CityMatch.Scripts.Level;
+using TMC._Project.Gameplay.Common.Scripts.LivesSystem.Service;
+using TMC._Project.Gameplay.Common.Scripts.LivesSystem.Settings;
 using UnityEngine;
 
 namespace TMC._Project.Gameplay.Common.Scripts.Bootstrappers
@@ -20,6 +22,7 @@ namespace TMC._Project.Gameplay.Common.Scripts.Bootstrappers
     {
         [SerializeField] private CurrencySettings _currencySettings;
         [SerializeField] private LevelSettings _levelSettings;
+        [SerializeField] private LivesSettings _livesSettings;
         
         private readonly List<IAsyncService> _asyncServices = new();
         
@@ -30,6 +33,7 @@ namespace TMC._Project.Gameplay.Common.Scripts.Bootstrappers
             _currencySettings.Initialize();
             ServiceLocator.Global.Register(_currencySettings);
             ServiceLocator.Global.Register(_levelSettings);
+            ServiceLocator.Global.Register(_livesSettings);
             
             var save = new JsonSaveService();
             ServiceLocator.Global.Register<ISaveService>(save);
@@ -42,6 +46,10 @@ namespace TMC._Project.Gameplay.Common.Scripts.Bootstrappers
             var currency = new CurrencyService();
             ServiceLocator.Global.Register<ICurrencyService>(currency);
             _asyncServices.Add(currency);
+
+            var liveService = new LivesService();
+            ServiceLocator.Global.Register(liveService);
+            _asyncServices.Add(liveService);
 
             var scene = new SceneService();
             ServiceLocator.Global.Register(scene);
@@ -56,7 +64,7 @@ namespace TMC._Project.Gameplay.Common.Scripts.Bootstrappers
             foreach (var s in _asyncServices)
                 await s.InitializeAsync();
             
-            // fire event
+            
             EventBus<ServicesReadyEvent>.Publish(new ServicesReadyEvent());
         }
     }
