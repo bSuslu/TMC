@@ -3,7 +3,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace _Project.Core.Systems.SaveSystem.Editor
+namespace _Project.Editor.Tools
 {
     public static class DataTools
     {
