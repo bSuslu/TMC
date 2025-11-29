@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8255089051927211292}
   - component: {fileID: 5897176255633201104}
   m_Layer: 5
-  m_Name: CurrentLevel
+  m_Name: CurrentLevelWidget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
