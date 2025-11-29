@@ -1,5 +1,6 @@
 using _Project.Core.Framework.EventBus;
 using _Project.Core.Systems.SceneSystem.Events;
+using _Project.Core.Systems.SceneSystem.SO;
 using UnityEngine;
 using UnityEngine.UI;
 
