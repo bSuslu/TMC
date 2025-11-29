@@ -146,7 +146,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5893376163215323401}
   - component: {fileID: 2876328488545609643}
-  - component: {fileID: 4870824137295493564}
+  - component: {fileID: 4409891142384605962}
   m_Layer: 5
   m_Name: LivesWidget
   m_TagString: Untagged
@@ -201,7 +201,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &4870824137295493564
+--- !u!114 &4409891142384605962
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -210,10 +210,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5968036326062912233}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627893eb4dfbf4120ba59e7b569e7963, type: 3}
+  m_Script: {fileID: 11500000, guid: c674dd35b1e043ca99fab2921d6c3b1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currencyType: 1
   _icon: {fileID: 8859877453289381389}
   _amountText: {fileID: 6502664182626410611}
 --- !u!1 &8345823805375633126
