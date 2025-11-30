@@ -1,6 +1,6 @@
-using _Project.Core.Framework.ServiceLocator;
+using _Project.Core.Framework.EventBus;
 using _Project.Core.Framework.ServiceLocator.Bootstrappers;
-using TMC._Project.Gameplay.CityMatch.Scripts.Level;
+using _Project.Core.Systems.LoadingSystem.Events;
 
 namespace TMC._Project.Gameplay.Common.Scripts.Bootstrappers
 {
@@ -10,7 +10,7 @@ namespace TMC._Project.Gameplay.Common.Scripts.Bootstrappers
         {
             base.Bootstrap();
             
-            LevelService levelService = ServiceLocator.Global.Get<LevelService>();
+            EventBus<ServicesReadyEvent>.Publish(new ServicesReadyEvent());
         }
     }
 }

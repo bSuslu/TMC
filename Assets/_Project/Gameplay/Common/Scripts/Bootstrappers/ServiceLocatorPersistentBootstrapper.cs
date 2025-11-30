@@ -25,39 +25,26 @@ namespace TMC._Project.Gameplay.Common.Scripts.Bootstrappers
         [SerializeField] private LevelSettings _levelSettings;
         [SerializeField] private LivesSettings _livesSettings;
         [SerializeField] private ItemSettings _itemSettings;
-        
+
         private readonly List<IAsyncService> _asyncServices = new();
+        
         
         protected override void Bootstrap()
         {
             base.Bootstrap();
             
-            _currencySettings.Initialize();
-            ServiceLocator.Global.Register(_currencySettings);
-            ServiceLocator.Global.Register(_levelSettings);
-            ServiceLocator.Global.Register(_livesSettings);
-            _itemSettings.Initialize();
-            ServiceLocator.Global.Register(_itemSettings);
+            var global = ServiceLocator.Global;
             
-            var save = new JsonSaveService();
-            ServiceLocator.Global.Register<ISaveService>(save);
-            _asyncServices.Add(save);
-
-            var levelService = new LevelService();
-            ServiceLocator.Global.Register(levelService);
-            _asyncServices.Add(levelService);
+            global.Register(_currencySettings).Initialize();
+            global.Register(_levelSettings).Initialize();
+            global.Register(_livesSettings).Initialize();
+            global.Register(_itemSettings).Initialize();
             
-            var currency = new CurrencyService();
-            ServiceLocator.Global.Register<ICurrencyService>(currency);
-            _asyncServices.Add(currency);
-
-            var liveService = new LivesService();
-            ServiceLocator.Global.Register(liveService);
-            _asyncServices.Add(liveService);
-
-            var scene = new SceneService();
-            ServiceLocator.Global.Register(scene);
-            _asyncServices.Add(scene);
+            _asyncServices.Add(global.Register<ISaveService>(new JsonSaveService()));
+            _asyncServices.Add(global.Register(new LevelService()));
+            _asyncServices.Add(global.Register<ICurrencyService>(new CurrencyService()));
+            _asyncServices.Add(global.Register(new LivesService()));
+            _asyncServices.Add(global.Register(new SceneService()));
             
             InitializeAsync().Forget();
         }
