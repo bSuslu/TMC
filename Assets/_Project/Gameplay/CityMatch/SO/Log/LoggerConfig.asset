@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79568053cbaa4aa59d560cceb55a44f4, type: 3}
   m_Name: LoggerConfig
   m_EditorClassIdentifier: 
-  EnableLogs: 0
-  EnableInfo: 0
-  EnableWarnings: 0
-  EnableErrors: 0
+  EnableLogs: 1
+  EnableInfo: 1
+  EnableWarnings: 1
+  EnableErrors: 1

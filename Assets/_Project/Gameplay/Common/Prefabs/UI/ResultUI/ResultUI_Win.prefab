@@ -297,8 +297,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3072ed9e20544a2b9059d4012676ee70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _outcomeContainer: {fileID: 8828713323461902106}
   _timerText: {fileID: 3505348882114337175}
-  _rewardContainer: {fileID: 8828713323461902106}
 --- !u!224 &8828713323461902106 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 331904382043047384, guid: 6799efc481e3943d1bc91a684d17b15a, type: 3}

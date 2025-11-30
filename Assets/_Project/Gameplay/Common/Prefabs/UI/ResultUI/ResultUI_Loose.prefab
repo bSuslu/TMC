@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf17a548e81f488cacaa00e03e0978a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _costContainer: {fileID: 8828713323461902106}
+  _outcomeContainer: {fileID: 8828713323461902106}
 --- !u!224 &8828713323461902106 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 331904382043047384, guid: 6799efc481e3943d1bc91a684d17b15a, type: 3}

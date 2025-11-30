@@ -6,27 +6,32 @@ using _Project.Core.Systems.TimeSystem.Interfaces;
 using Cysharp.Threading.Tasks;
 using TMC._Project.Gameplay.CityMatch.Scripts.Events;
 using TMC._Project.Gameplay.CityMatch.Scripts.Level;
+using TMC._Project.Gameplay.Common.Scripts.OutcomeSystem;
 using UnityEngine;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts.GameResult
 {
     public class GameResultManager : MonoBehaviour
     {
-        [SerializeField] private GameObject _winPanel;
-        [SerializeField] private GameObject _losePanel;
-        
+        [SerializeField] private WinUI _winPanel;
+        [SerializeField] private LoseUI _losePanel;
+
         private EventBinding<AllGoalItemsCollectedEvent> _allGoalItemsCollectedBinding;
         private EventBinding<TimeExpiredEvent> _timeExpiredBinding;
         private EventBinding<SlotsFullEvent> _slotsFullBinding;
-        
+
+        private LevelService _levelService;
+
         private void Start()
         {
+            _levelService = ServiceLocator.Global.Get<LevelService>();
+
             _allGoalItemsCollectedBinding = new EventBinding<AllGoalItemsCollectedEvent>(OnAllGoalItemsCollected);
             EventBus<AllGoalItemsCollectedEvent>.Subscribe(_allGoalItemsCollectedBinding);
-            
+
             _timeExpiredBinding = new EventBinding<TimeExpiredEvent>(OnTimerExpired);
             EventBus<TimeExpiredEvent>.Subscribe(_timeExpiredBinding);
-            
+
             _slotsFullBinding = new EventBinding<SlotsFullEvent>(OnSlotsFull);
             EventBus<SlotsFullEvent>.Subscribe(_slotsFullBinding);
         }
@@ -38,46 +43,47 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.GameResult
             EventBus<SlotsFullEvent>.Unsubscribe(_slotsFullBinding);
         }
 
-        private void OnSlotsFull()
+        private void OnSlotsFull() => Lose();
+
+        private void OnAllGoalItemsCollected() => Win();
+
+
+        private void OnTimerExpired() => Lose();
+
+
+        private void Win()
         {
             StopTimer();
-            _losePanel.SetActive(true);
-            GivePenalties();
+            var rewards = _levelService.ActiveLevelConfig.Rewards;
+            GiveRewards(rewards);
+            _winPanel.SetOutcomes(rewards);
+            _winPanel.gameObject.SetActive(true);
+            
+            _levelService.CompleteLevel().Forget();
         }
-        private void OnAllGoalItemsCollected()
+
+        private void Lose()
         {
             StopTimer();
-            _winPanel.SetActive(true);
-            GiveRewards();
-            ServiceLocator.Global.Get<LevelService>().CompleteLevel().Forget();
+            var penalties = _levelService.ActiveLevelConfig.Penalties;
+            _losePanel.gameObject.SetActive(true);
+            GivePenalties(penalties);
+            _losePanel.SetOutcomes(penalties);
         }
-        
-        private void OnTimerExpired()
-        {
-            StopTimer();
-            _losePanel.SetActive(true);
-            GivePenalties();
-        }
-        
+
         private void StopTimer()
         {
             ServiceLocator.ForSceneOf(this).Get<IGameTimerService>().StopTimer();
         }
-        
-        private void GiveRewards()
-        {
-            LevelService levelService = ServiceLocator.Global.Get<LevelService>();
-            var rewards = levelService.ActiveLevelConfig.Rewards;
 
+        private void GiveRewards(Outcome[] rewards)
+        {
             foreach (var reward in rewards)
                 reward.ApplyOutcome();
         }
-        
-        private void GivePenalties()
-        {
-            LevelService levelService = ServiceLocator.Global.Get<LevelService>();
-            var penalties = levelService.ActiveLevelConfig.Penalties;
 
+        private void GivePenalties(Outcome[] penalties)
+        {
             foreach (var penalty in penalties)
                 penalty.ApplyOutcome();
         }
