@@ -13,9 +13,11 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
         [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public ClickBehaviour ClickBehaviour { get; private set; }
+
         [field: SerializeField]
         public SerializableDictionary<IsometricFaceDirection, ItemEntity> ItemEntities { get; private set; }
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             foreach (var itemEntity in ItemEntities)
@@ -24,9 +26,11 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
                 itemEntity.Value.Id = Id;
                 EditorUtility.SetDirty(itemEntity.Value);
             }
+
             EditorUtility.SetDirty(this);
         }
-        
+#endif
+
         public ItemEntity GetItemEntity(IsometricFaceDirection faceDirection) => ItemEntities[faceDirection];
     }
 }
