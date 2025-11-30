@@ -33,7 +33,18 @@ namespace _Project.Core.Framework.ServiceLocator
             throw new ArgumentException($"ServiceManager.Get: Service of type {type.FullName} not registered");
         }
 
-        public ServiceManager Register<T>(T service)
+        // public ServiceManager Register<T>(T service)
+        // {
+        //     Type type = typeof(T);
+        //
+        //     if (!_services.TryAdd(type, service))
+        //     {
+        //         Debug.LogError($"ServiceManager.Register: Service of type {type.FullName} already registered");
+        //     }
+        //
+        //     return this;
+        // }
+        public T Register<T>(T service)
         {
             Type type = typeof(T);
 
@@ -42,7 +53,7 @@ namespace _Project.Core.Framework.ServiceLocator
                 Debug.LogError($"ServiceManager.Register: Service of type {type.FullName} already registered");
             }
 
-            return this;
+            return service;
         }
 
         public ServiceManager Register(Type type, object service)

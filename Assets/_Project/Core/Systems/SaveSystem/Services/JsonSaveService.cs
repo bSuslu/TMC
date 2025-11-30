@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace _Project.Core.Systems.SaveSystem.Services
 {
-    public class JsonSaveService : ISaveService, IAsyncService
+    public class JsonSaveService : ISaveService
     {
         private const string k_folderName = "SaveData";
         private readonly string _fullFolderPath;

@@ -1,8 +1,9 @@
+using _Project.Core.Systems.LoadingSystem.Interfaces;
 using Cysharp.Threading.Tasks;
 
 namespace _Project.Core.Systems.SaveSystem.Interfaces
 {
-    public interface ISaveService
+    public interface ISaveService : IAsyncService
     {
         // Async methods (NEW - önerilen)
         UniTask<bool> SaveAsync<T>(string relativePath, T data, bool overwrite = true, bool encrypted = false);

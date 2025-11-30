@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace _Project.Core.Systems.CurrencySystem.Services
 {
-    public class CurrencyService : ICurrencyService, IAsyncService
+    public class CurrencyService : ICurrencyService
     {
         public Dictionary<CurrencyType, CurrencyData> CurrencyDatas { get; private set; }
         public event Action<CurrencyType, int> OnCurrencyAmountUpdated;

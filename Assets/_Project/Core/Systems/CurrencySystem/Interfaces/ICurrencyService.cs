@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using _Project.Core.Systems.CurrencySystem.Datas;
+using _Project.Core.Systems.LoadingSystem.Interfaces;
 using UnityEngine;
 
 namespace _Project.Core.Systems.CurrencySystem.Interfaces
 {
-    public interface ICurrencyService
+    public interface ICurrencyService: IAsyncService
     {
         public Dictionary<CurrencyType, CurrencyData> CurrencyDatas { get; }
         public event Action<CurrencyType, int> OnCurrencyAmountUpdated;

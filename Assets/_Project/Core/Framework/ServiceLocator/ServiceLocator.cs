@@ -115,10 +115,16 @@ namespace _Project.Core.Framework.ServiceLocator
         /// <param name="service">The service to register.</param>  
         /// <typeparam name="T">Class type of the service to be registered.</typeparam>
         /// <returns>The ServiceLocator instance after registering the service.</returns>
-        public ServiceLocator Register<T>(T service)
+        // public ServiceLocator Register<T>(T service)
+        // {
+        //     _services.Register(service);
+        //     return this;
+        // }
+        //
+        public T Register<T>(T service)
         {
             _services.Register(service);
-            return this;
+            return service;
         }
 
         /// <summary>
