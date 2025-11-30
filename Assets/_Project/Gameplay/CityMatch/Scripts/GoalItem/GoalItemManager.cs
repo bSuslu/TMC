@@ -11,6 +11,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.GoalItem
     public class GoalItemManager : MonoBehaviour
     {
         [SerializeField] private GoalItemView _goalItemViewPrefab;
+        [SerializeField] private Transform _parent;
 
         private readonly Dictionary<string, GoalItemModel> _goalItemModels = new();
         private readonly Dictionary<string, GoalItemView> _goalItemViews = new();
@@ -28,6 +29,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.GoalItem
         private void OnDestroy()
         {
             EventBus<CollectableItemClickedEvent>.Unsubscribe(_collectableItemClickedEventBinding);
+            EventBus<AllGoalItemsCollectedEvent>.Clear();
         }
         
         private void Start()
@@ -35,7 +37,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.GoalItem
             foreach (var goalItemConfig in _levelConfig.GoalItems)
             {
                 GoalItemModel goalItemModel = new(goalItemConfig.Config.Icon, goalItemConfig.Amount);
-                GoalItemView goalItemView = Instantiate(_goalItemViewPrefab, transform);
+                GoalItemView goalItemView = Instantiate(_goalItemViewPrefab, _parent);
                 goalItemView.Initialize(goalItemModel);
                 _goalItemModels.Add(goalItemConfig.Config.Id, goalItemModel);
                 _goalItemViews.Add(goalItemConfig.Config.Id, goalItemView);

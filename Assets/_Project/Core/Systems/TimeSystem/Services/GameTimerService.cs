@@ -3,6 +3,8 @@ using _Project.Core.Systems.TimeSystem.Interfaces;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using System;
+using _Project.Core.Framework.EventBus;
+using _Project.Core.Systems.TimeSystem.Events;
 
 namespace _Project.Core.Systems.TimeSystem.Services
 {
@@ -31,7 +33,7 @@ namespace _Project.Core.Systems.TimeSystem.Services
             OnTimerStarted?.Invoke();
 
             // Timer loop
-            while (_currentTimer.TimeRemaining > 0 && _isTimerActive)
+            while (_isTimerActive && _currentTimer.TimeRemaining > 0)
             {
                 if (!_currentTimer.IsPaused)
                 {
@@ -47,9 +49,10 @@ namespace _Project.Core.Systems.TimeSystem.Services
                 await UniTask.Yield();
             }
 
-            if (_currentTimer.TimeRemaining <= 0)
+            if (_isTimerActive && _currentTimer.TimeRemaining <= 0)
             {
                 OnTimerExpired?.Invoke();
+                EventBus<TimeExpiredEvent>.Publish(new TimeExpiredEvent());
                 _currentTimer.OnTimerExpired?.Invoke();
             }
 
