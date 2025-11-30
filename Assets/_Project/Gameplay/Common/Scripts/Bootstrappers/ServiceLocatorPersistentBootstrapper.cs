@@ -34,6 +34,8 @@ namespace TMC._Project.Gameplay.Common.Scripts.Bootstrappers
         
         protected override void Bootstrap()
         {
+            Application.targetFrameRate = 60;
+            
             base.Bootstrap();
             
             var global = ServiceLocator.Global;

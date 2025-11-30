@@ -31,17 +31,44 @@ MonoBehaviour:
     Size: 15
     Position: {x: 0, y: 0, z: -10}
   <ItemPlacements>k__BackingField:
+  - ItemId: blue_building
+    Position: {x: 1.44, y: -0.22}
+    FaceDirection: 0
   - ItemId: auto_shop
     Position: {x: -3.54, y: 0.01}
     FaceDirection: 0
   - ItemId: auto_shop
+    Position: {x: -2.96, y: -1.16}
+    FaceDirection: 0
+  - ItemId: auto_shop
+    Position: {x: -2.18, y: 0.24000001}
+    FaceDirection: 0
+  - ItemId: auto_shop
     Position: {x: -0.59, y: 1.68}
+    FaceDirection: 0
+  - ItemId: auto_shop
+    Position: {x: -0.01000005, y: 0.51}
+    FaceDirection: 0
+  - ItemId: auto_shop
+    Position: {x: 0.77, y: 1.91}
     FaceDirection: 0
   - ItemId: barber_shop
     Position: {x: 0.99, y: 1.41}
     FaceDirection: 0
   - ItemId: barber_shop
+    Position: {x: -1.22, y: -1.92}
+    FaceDirection: 0
+  - ItemId: barber_shop
+    Position: {x: 2.2299998, y: 1.42}
+    FaceDirection: 0
+  - ItemId: barber_shop
     Position: {x: 2.38, y: 0.48}
+    FaceDirection: 0
+  - ItemId: barber_shop
+    Position: {x: 0.17000008, y: -2.85}
+    FaceDirection: 0
+  - ItemId: barber_shop
+    Position: {x: 3.62, y: 0.49}
     FaceDirection: 0
   - ItemId: barn_red
     Position: {x: 3.34, y: -0.38}

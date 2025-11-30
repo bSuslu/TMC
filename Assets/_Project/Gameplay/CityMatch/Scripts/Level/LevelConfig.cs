@@ -14,5 +14,6 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
         [field: SerializeField] public LevelItemRequirement[] GoalItems { get; set; }
         [field: SerializeField] public LevelCameraData InitialCameraData { get; set; }
         [field: SerializeField] public LevelItemPlacementData[] ItemPlacements { get; set; }
+        
     }
 }

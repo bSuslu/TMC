@@ -3,6 +3,7 @@ using _Project.Core.Framework.EventBus.Implementations;
 using _Project.Core.Framework.ServiceLocator;
 using _Project.Core.Systems.TimeSystem.Events;
 using _Project.Core.Systems.TimeSystem.Interfaces;
+using Cysharp.Threading.Tasks;
 using TMC._Project.Gameplay.CityMatch.Scripts.Events;
 using TMC._Project.Gameplay.CityMatch.Scripts.Level;
 using UnityEngine;
@@ -47,6 +48,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.GameResult
             StopTimer();
             _winPanel.SetActive(true);
             GiveRewards();
+            ServiceLocator.Global.Get<LevelService>().CompleteLevel().Forget();
         }
         
         private void OnTimerExpired()
