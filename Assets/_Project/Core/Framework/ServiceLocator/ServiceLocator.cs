@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Project.Core.Framework.LogSystems;
 using _Project.Core.Framework.ServiceLocator.Bootstrappers;
-using _Project.Core.Systems.LogSystems;
 using UnityEditor;
 using UnityEngine;
 

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using _Project.Core.Systems.LogSystems;
+using _Project.Core.Framework.LogSystems;
 using UnityEngine;
 
 namespace _Project.Core.Framework.ServiceLocator

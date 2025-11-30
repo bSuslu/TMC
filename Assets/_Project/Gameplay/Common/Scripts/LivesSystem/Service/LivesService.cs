@@ -1,4 +1,5 @@
 using System;
+using _Project.Core.Framework.LogSystems;
 using _Project.Core.Framework.ServiceLocator;
 using _Project.Core.Systems.LoadingSystem.Interfaces;
 using _Project.Core.Systems.SaveSystem.Interfaces;
@@ -36,6 +37,7 @@ namespace TMC._Project.Gameplay.Common.Scripts.LivesSystem.Service
             if (success && loadedData != null)
             {
                 Data = loadedData;
+                Log.Info($"[LivesService] Load successful. CurrentLives: {Data.CurrentLives}, MaxLives: {Data.MaxLives}");
                 NormalizeData();
             }
             else
@@ -46,12 +48,14 @@ namespace TMC._Project.Gameplay.Common.Scripts.LivesSystem.Service
                     MaxLives = _livesSettings.MaxLives,
                     RegenTime = _livesSettings.RegenTime
                 };
+                Log.Info("[LivesService] No saved data found. Initializing with default settings.");
                 await SaveAsync();
             }
         }
 
         private void NormalizeData()
         {
+            Log.Info("[LivesService] NormalizeData started.");
             bool changed = false;
 
             if (Data.CurrentLives > _livesSettings.MaxLives)
@@ -71,10 +75,12 @@ namespace TMC._Project.Gameplay.Common.Scripts.LivesSystem.Service
                 SaveAsync().Forget();
                 OnLivesChanged?.Invoke(Data.CurrentLives);
             }
+            Log.Info("[LivesService] NormalizeData completed.");
         }
 
         private async UniTask SaveAsync()
         {
+            Log.Info("[LivesService] SaveAsync triggered.");
             await _saveService.SaveAsync(k_saveKey, Data);
         }
 
@@ -91,7 +97,7 @@ namespace TMC._Project.Gameplay.Common.Scripts.LivesSystem.Service
                 if (Data.CurrentLives == _livesSettings.MaxLives)
                     OnLivesFull?.Invoke();
             }
-            Debug.Log($"[LivesService] trying to add {amount} lives. old lives: {oldLives}, new lives: {Data.CurrentLives}");
+            Log.Info($"[LivesService] AddLives: amount={amount}, old={oldLives}, new={Data.CurrentLives}");
         }
 
         public void RemoveLives(int amount)
@@ -107,13 +113,15 @@ namespace TMC._Project.Gameplay.Common.Scripts.LivesSystem.Service
                 if (Data.CurrentLives == 0)
                     OnLivesDepleted?.Invoke();
             }
-            Debug.Log($"[LivesService] trying to remove {amount} lives. old lives: {oldLives}, new lives: {Data.CurrentLives}");
+            Log.Info($"[LivesService] RemoveLives: amount={amount}, old={oldLives}, new={Data.CurrentLives}");
         }
 
         public void SetCurrentLives(int amount)
         {
             int oldLives = Data.CurrentLives;
+            Log.Info($"[LivesService] SetCurrentLives started. Requested={amount}, old={oldLives}");
             Data.CurrentLives = Mathf.Clamp(amount, 0, _livesSettings.MaxLives);
+            Log.Info($"[LivesService] SetCurrentLives applied. New={Data.CurrentLives}");
             SaveAsync().Forget();
 
             if (Data.CurrentLives != oldLives)
@@ -129,11 +137,13 @@ namespace TMC._Project.Gameplay.Common.Scripts.LivesSystem.Service
 
         public void StartRegen()
         {
+            Log.Info("[LivesService] Regen started.");
             OnLivesRegenStarted?.Invoke();
         }
 
         public void CompleteRegen()
         {
+            Log.Info("[LivesService] Regen completed.");
             OnLivesRegenCompleted?.Invoke();
         }
     }

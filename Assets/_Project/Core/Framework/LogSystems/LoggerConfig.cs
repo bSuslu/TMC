@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace _Project.Core.Systems.LogSystems
+namespace _Project.Core.Framework.LogSystems
 {
     [CreateAssetMenu(fileName = "LoggerConfig", menuName = "SO/Logger/Config")]
     public class LoggerConfig : ScriptableObject

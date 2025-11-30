@@ -1,4 +1,4 @@
-namespace _Project.Core.Systems.LogSystems
+namespace _Project.Core.Framework.LogSystems
 {
     public static class Log
     {
