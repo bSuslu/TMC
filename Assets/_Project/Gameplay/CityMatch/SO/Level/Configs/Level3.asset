@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a1b3bdcfa367046f6b169005488cfde9, type: 3}
-  m_Name: Level1
+  m_Name: Level3
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: 1
+  <Id>k__BackingField: 3
   <DurationInSeconds>k__BackingField: 30
   <Rewards>k__BackingField:
-  - {fileID: 11400000, guid: e49dd7e7266934d399de242554d36bb4, type: 2}
-  - {fileID: 11400000, guid: f4f2ef6697583457b8f140d13da83ff3, type: 2}
+  - {fileID: 11400000, guid: 6468267c1a8324aca91d0cbc515c45e1, type: 2}
+  - {fileID: 11400000, guid: 109a6b5146858445292b16cefc3abae9, type: 2}
   <Penalties>k__BackingField:
-  - {fileID: 11400000, guid: 355ded5d33c2f443c93df811ed42280f, type: 2}
-  - {fileID: 11400000, guid: e5da5733a6b064c61b77433941cd2448, type: 2}
+  - {fileID: 11400000, guid: 3610870d79c914ef0a5cc8426804e2af, type: 2}
+  - {fileID: 11400000, guid: baf331f783cca4e53a0a2ed8b48095d0, type: 2}
   <Backgrounds>k__BackingField:
   - {fileID: 5635975256424274857, guid: 7d6b060d55460437299945f8ca9452b7, type: 3}
   <GoalItems>k__BackingField:
@@ -30,7 +30,7 @@ MonoBehaviour:
     Position: {x: 0, y: 0, z: -10}
   <ItemPlacements>k__BackingField:
   - ItemId: auto_shop
-    Position: {x: 3.51, y: 0.27}
+    Position: {x: -3.54, y: 0.01}
     FaceDirection: 0
   - ItemId: auto_shop
     Position: {x: -2.18, y: 0.24000001}
@@ -50,6 +50,51 @@ MonoBehaviour:
   - ItemId: barn_red
     Position: {x: 3.34, y: -0.38}
     FaceDirection: 0
+  - ItemId: blue_building
+    Position: {x: 0.89, y: -1.91}
+    FaceDirection: 0
+  - ItemId: cafe
+    Position: {x: -1.62, y: 0.71}
+    FaceDirection: 0
+  - ItemId: blue_building
+    Position: {x: 1.44, y: -0.22}
+    FaceDirection: 0
+  - ItemId: auto_shop
+    Position: {x: -3.54, y: 0.01}
+    FaceDirection: 0
+  - ItemId: auto_shop
+    Position: {x: -2.96, y: -1.16}
+    FaceDirection: 0
+  - ItemId: auto_shop
+    Position: {x: -2.18, y: 0.24000001}
+    FaceDirection: 0
+  - ItemId: auto_shop
+    Position: {x: -0.59, y: 1.68}
+    FaceDirection: 0
+  - ItemId: auto_shop
+    Position: {x: -0.01000005, y: 0.51}
+    FaceDirection: 0
+  - ItemId: auto_shop
+    Position: {x: 0.77, y: 1.91}
+    FaceDirection: 0
+  - ItemId: barber_shop
+    Position: {x: 0.99, y: 1.41}
+    FaceDirection: 0
+  - ItemId: barber_shop
+    Position: {x: -1.22, y: -1.92}
+    FaceDirection: 0
+  - ItemId: barber_shop
+    Position: {x: 2.2299998, y: 1.42}
+    FaceDirection: 0
+  - ItemId: barber_shop
+    Position: {x: 2.38, y: 0.48}
+    FaceDirection: 0
+  - ItemId: barber_shop
+    Position: {x: 0.17000008, y: -2.85}
+    FaceDirection: 0
+  - ItemId: barber_shop
+    Position: {x: 3.62, y: 0.49}
+    FaceDirection: 0
   - ItemId: barn_red
     Position: {x: 3.34, y: -0.38}
     FaceDirection: 0
@@ -57,16 +102,10 @@ MonoBehaviour:
     Position: {x: 2.14, y: -1.23}
     FaceDirection: 0
   - ItemId: blue_building
-    Position: {x: -1.13, y: -0.16}
-    FaceDirection: 0
-  - ItemId: blue_building
     Position: {x: 0.89, y: -1.91}
     FaceDirection: 0
   - ItemId: blue_building
     Position: {x: 1.44, y: -0.22}
-    FaceDirection: 0
-  - ItemId: cafe
-    Position: {x: -1.62, y: 0.71}
     FaceDirection: 0
   - ItemId: cafe
     Position: {x: -1.62, y: 0.71}

@@ -48,7 +48,7 @@ namespace TMC._Project.Gameplay.CityMatch.LevelEditor.Scripts
 
             _levelConfig = levelConfig;
 
-            ValidateItemPlacements();
+            // ValidateItemPlacements();
         }
 
         [Button]
