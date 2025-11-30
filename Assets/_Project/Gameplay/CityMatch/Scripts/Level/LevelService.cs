@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using _Project.Core.Framework.ServiceLocator;
 using _Project.Core.Systems.LoadingSystem.Interfaces;
+using _Project.Core.Systems.LogSystems;
 using _Project.Core.Systems.SaveSystem.Interfaces;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -25,9 +26,9 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
 
         public async UniTask InitializeAsync()
         {
-            Debug.Log("Initializing LevelService");
+            Log.Info("LevelService: Initializing...");
             await LoadLevelData();
-            Debug.Log("LevelService Initialized");
+            Log.Info("LevelService: Initialized.");
         }
 
         public async UniTask LoadLevelData()
@@ -77,21 +78,21 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
             var levelConfig = _levelSettings.GetLevelConfig(levelId);
             if (levelConfig == null)
             {
-                Debug.LogError($"Level {levelId} config not found!");
+                Log.Error($"LevelService: Level {levelId} config not found!");
                 return false;
             }
 
             var levelData = GetLevelData(levelId);
             if (!levelData.IsUnlocked)
             {
-                Debug.LogWarning($"Level {levelId} is locked!");
+                Log.Warning($"LevelService: Level {levelId} is locked!");
                 return false;
             }
 
             ActiveLevelId = levelId;
             ActiveLevelConfig = levelConfig;
 
-            Debug.Log($"Level {levelId} started!");
+            Log.Info($"LevelService: Level {levelId} started.");
             return true;
         }
 
@@ -108,7 +109,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
             // Save et
             await SaveAsync();
 
-            Debug.Log($"Level {ActiveLevelId} completed!");
+            Log.Info($"LevelService: Level {ActiveLevelId} completed.");
         }
 
         public LevelData GetLevelData(int levelId)

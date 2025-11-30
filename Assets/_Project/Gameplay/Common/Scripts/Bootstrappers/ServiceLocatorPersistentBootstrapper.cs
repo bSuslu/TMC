@@ -7,6 +7,7 @@ using _Project.Core.Systems.CurrencySystem.Services;
 using _Project.Core.Systems.CurrencySystem.Settings;
 using _Project.Core.Systems.LoadingSystem.Events;
 using _Project.Core.Systems.LoadingSystem.Interfaces;
+using _Project.Core.Systems.LogSystems;
 using _Project.Core.Systems.SaveSystem.Interfaces;
 using _Project.Core.Systems.SaveSystem.Services;
 using _Project.Core.Systems.SceneSystem.Services;
@@ -25,6 +26,8 @@ namespace TMC._Project.Gameplay.Common.Scripts.Bootstrappers
         [SerializeField] private LevelSettings _levelSettings;
         [SerializeField] private LivesSettings _livesSettings;
         [SerializeField] private ItemSettings _itemSettings;
+        
+        [SerializeField] private LoggerConfig _loggerConfig;
 
         private readonly List<IAsyncService> _asyncServices = new();
         
@@ -34,6 +37,10 @@ namespace TMC._Project.Gameplay.Common.Scripts.Bootstrappers
             base.Bootstrap();
             
             var global = ServiceLocator.Global;
+            
+            var loggerService = new LoggerService(_loggerConfig);
+            // for static facade
+            Log.Initialize(loggerService);
             
             global.Register(_currencySettings).Initialize();
             global.Register(_levelSettings).Initialize();

@@ -63,20 +63,6 @@ namespace TMC._Project.Gameplay.CityMatch.Editor
                 };
                 _levelConfig.ItemPlacements[i] = placementData;
             }
-            
-            // Be sure every id has multiple of 3 items
-            // var groupedItems = _levelConfig.ItemPlacements.GroupBy(x => x.ItemId);
-            // foreach (var groupedItem in groupedItems)
-            // {
-            //     if(groupedItem.Count() % 3 != 0)
-            //     {
-            //         Debug.LogError($"[LevelLoader] Item {groupedItem.Key} has {groupedItem.Count()} items, but should have multiple of 3");
-            //     }
-            //     else
-            //     {
-            //         Debug.Log($"[LevelLoader] Item {groupedItem.Key} has {groupedItem.Count()} items");
-            //     }
-            // }
         }
     }
 }

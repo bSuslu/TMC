@@ -7,6 +7,10 @@ using UnityEngine;
 
 namespace _Project.Core.Framework.ServiceLocator
 {
+    /// <summary>
+    /// Provides a centralized container for registering and resolving services within the application.
+    /// Supports global and scene-specific service locators to manage service lifetimes and scopes.
+    /// </summary>
     public class ServiceLocator : MonoBehaviour
     {
         private static ServiceLocator _global;
@@ -18,6 +22,11 @@ namespace _Project.Core.Framework.ServiceLocator
         private const string k_globalServiceLocatorName = "ServiceLocator [Global]";
         private const string k_sceneServiceLocatorName = "ServiceLocator [Scene]";
 
+        /// <summary>
+        /// Configures this ServiceLocator instance as the global service locator.
+        /// Optionally marks the GameObject to not be destroyed on scene load.
+        /// </summary>
+        /// <param name="dontDestroyOnLoad">If true, the GameObject will persist across scene loads.</param>
         internal void ConfigureAsGlobal(bool dontDestroyOnLoad = true)
         {
             if (_global == this)
@@ -36,6 +45,10 @@ namespace _Project.Core.Framework.ServiceLocator
             }
         }
 
+        /// <summary>
+        /// Configures this ServiceLocator instance as the service locator for its current scene.
+        /// Throws an error if another ServiceLocator is already configured for the scene.
+        /// </summary>
         internal void ConfigureForScene()
         {
             UnityEngine.SceneManagement.Scene scene = gameObject.scene;
@@ -52,7 +65,7 @@ namespace _Project.Core.Framework.ServiceLocator
         }
 
         /// <summary>
-        /// Gets the global ServiceLocator instance. Creates new if none exists.
+        /// Gets the global ServiceLocator instance. Creates and bootstraps a new one if none exists.
         /// </summary>        
         public static ServiceLocator Global
         {
@@ -74,8 +87,11 @@ namespace _Project.Core.Framework.ServiceLocator
         }
 
         /// <summary>
-        /// Returns the <see cref="ServiceLocator"/> configured for the scene of a MonoBehaviour. Falls back to the global instance.
+        /// Returns the <see cref="ServiceLocator"/> configured for the scene of a given MonoBehaviour.
+        /// Falls back to the global ServiceLocator if no scene-specific locator is found.
         /// </summary>
+        /// <param name="mb">The MonoBehaviour whose scene is used to find the ServiceLocator.</param>
+        /// <returns>The ServiceLocator instance for the scene or the global instance.</returns>
         public static ServiceLocator ForSceneOf(MonoBehaviour mb)
         {
             UnityEngine.SceneManagement.Scene scene = mb.gameObject.scene;
@@ -101,26 +117,22 @@ namespace _Project.Core.Framework.ServiceLocator
         }
 
         /// <summary>
-        /// Gets the closest ServiceLocator instance to the provided 
-        /// MonoBehaviour in hierarchy, the ServiceLocator for its scene, or the global ServiceLocator.
+        /// Gets the closest ServiceLocator instance to the provided MonoBehaviour in its hierarchy,
+        /// or the ServiceLocator for its scene, or the global ServiceLocator as a fallback.
         /// </summary>
+        /// <param name="mb">The MonoBehaviour to find the ServiceLocator for.</param>
+        /// <returns>The closest ServiceLocator instance.</returns>
         public static ServiceLocator For(MonoBehaviour mb)
         {
             return mb.GetComponentInParent<ServiceLocator>().OrNull() ?? ForSceneOf(mb) ?? Global;
         }
 
         /// <summary>
-        /// Registers a service to the ServiceLocator using the service's type.
+        /// Registers a service instance with the ServiceLocator using the service's type.
         /// </summary>
-        /// <param name="service">The service to register.</param>  
-        /// <typeparam name="T">Class type of the service to be registered.</typeparam>
-        /// <returns>The ServiceLocator instance after registering the service.</returns>
-        // public ServiceLocator Register<T>(T service)
-        // {
-        //     _services.Register(service);
-        //     return this;
-        // }
-        //
+        /// <typeparam name="T">The class type of the service to be registered.</typeparam>
+        /// <param name="service">The service instance to register.</param>
+        /// <returns>The registered service instance.</returns>
         public T Register<T>(T service)
         {
             _services.Register(service);
@@ -128,10 +140,10 @@ namespace _Project.Core.Framework.ServiceLocator
         }
 
         /// <summary>
-        /// Registers a service to the ServiceLocator using a specific type.
+        /// Registers a service instance with the ServiceLocator using a specific type.
         /// </summary>
-        /// <param name="type">The type to use for registration.</param>
-        /// <param name="service">The service to register.</param>  
+        /// <param name="type">The type to register the service as.</param>
+        /// <param name="service">The service instance to register.</param>
         /// <returns>The ServiceLocator instance after registering the service.</returns>
         public ServiceLocator Register(Type type, object service)
         {
@@ -140,11 +152,12 @@ namespace _Project.Core.Framework.ServiceLocator
         }
 
         /// <summary>
-        /// Gets a service of a specific type. If no service of the required type is found, an error is thrown.
+        /// Retrieves a service of a specific type. Throws an exception if the service is not found.
         /// </summary>
-        /// <param name="service">Service of type T to get.</param>  
-        /// <typeparam name="T">Class type of the service to be retrieved.</typeparam>
-        /// <returns>The ServiceLocator instance after attempting to retrieve the service.</returns>
+        /// <typeparam name="T">The class type of the service to retrieve.</typeparam>
+        /// <param name="service">The output parameter to receive the service instance.</param>
+        /// <returns>The ServiceLocator instance after retrieving the service.</returns>
+        /// <exception cref="ArgumentException">Thrown if the service of the specified type is not registered.</exception>
         public ServiceLocator Get<T>(out T service) where T : class
         {
             if (TryGetService(out service)) return this;
@@ -159,10 +172,11 @@ namespace _Project.Core.Framework.ServiceLocator
         }
 
         /// <summary>
-        /// Allows retrieval of a service of a specific type. An error is thrown if the required service does not exist.
+        /// Retrieves a service of a specific type. Throws an exception if the service is not found.
         /// </summary>
-        /// <typeparam name="T">Class type of the service to be retrieved.</typeparam>
-        /// <returns>Instance of the service of type T.</returns>
+        /// <typeparam name="T">The class type of the service to retrieve.</typeparam>
+        /// <returns>The instance of the requested service.</returns>
+        /// <exception cref="ArgumentException">Thrown if the service of the specified type is not registered.</exception>
         public T Get<T>() where T : class
         {
             Type type = typeof(T);
@@ -177,11 +191,11 @@ namespace _Project.Core.Framework.ServiceLocator
         }
 
         /// <summary>
-        /// Tries to get a service of a specific type. Returns whether or not the process is successful.
+        /// Attempts to retrieve a service of a specific type.
         /// </summary>
-        /// <param name="service">Service of type T to get.</param>  
-        /// <typeparam name="T">Class type of the service to be retrieved.</typeparam>
-        /// <returns>True if the service retrieval was successful, false otherwise.</returns>
+        /// <typeparam name="T">The class type of the service to retrieve.</typeparam>
+        /// <param name="service">The output parameter to receive the service instance.</param>
+        /// <returns>True if the service was found; otherwise, false.</returns>
         public bool TryGet<T>(out T service) where T : class
         {
             Type type = typeof(T);
@@ -215,6 +229,10 @@ namespace _Project.Core.Framework.ServiceLocator
             return container != null;
         }
 
+        /// <summary>
+        /// Called when this ServiceLocator instance is destroyed.
+        /// Removes references to this instance from global or scene containers as appropriate.
+        /// </summary>
         void OnDestroy()
         {
             if (this == _global)

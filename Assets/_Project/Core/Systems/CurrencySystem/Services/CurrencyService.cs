@@ -4,14 +4,14 @@ using _Project.Core.Framework.ServiceLocator;
 using _Project.Core.Systems.CurrencySystem.Datas;
 using _Project.Core.Systems.CurrencySystem.Interfaces;
 using _Project.Core.Systems.CurrencySystem.Settings;
-using _Project.Core.Systems.LoadingSystem.Interfaces;
+using _Project.Core.Systems.LogSystems;
 using _Project.Core.Systems.SaveSystem.Interfaces;
 using Cysharp.Threading.Tasks;
-using UnityEditor;
 using UnityEngine;
 
 namespace _Project.Core.Systems.CurrencySystem.Services
 {
+    // CurrencyService manages player currencies, including loading, saving, updating, and unlocking.
     public class CurrencyService : ICurrencyService
     {
         public Dictionary<CurrencyType, CurrencyData> CurrencyDatas { get; private set; }
@@ -22,19 +22,22 @@ namespace _Project.Core.Systems.CurrencySystem.Services
         private readonly ISaveService _saveService;
         private const string k_saveKey = "currency_data";
 
+        // Constructor: resolves references to currency settings and save service via ServiceLocator.
         public CurrencyService()
         {
             _currencySettings = ServiceLocator.Global.Get<CurrencySettings>();
             _saveService = ServiceLocator.Global.Get<ISaveService>();
         }
         
+        // Initializes the currency service, loading or creating currency data as needed.
         public async UniTask InitializeAsync()
         {
-            Debug.Log("Initializing CurrencyService");
+            Log.Info("Initializing CurrencyService");
             await InitializeCurrencyDatas();
-            Debug.Log("CurrencyService Initialized");
+            Log.Info("CurrencyService Initialized");
         }
 
+        // Loads currency data from save, or initializes with default config if none found.
         private async UniTask InitializeCurrencyDatas()
         {
             var (success, loadedData) = await _saveService.TryLoadAsync<Dictionary<CurrencyType, CurrencyData>>(k_saveKey);
@@ -58,6 +61,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
             }
         }
 
+        // Initializes CurrencyDatas with default values from config.
         private void InitializeDefaultCurrencyDatas()
         {
             CurrencyDatas = new Dictionary<CurrencyType, CurrencyData>();
@@ -68,7 +72,8 @@ namespace _Project.Core.Systems.CurrencySystem.Services
             }
         }
 
-        // Just showed for live ops backward compatibility
+        // Synchronizes loaded currency data with the current configuration (adds missing types, removes extras).
+        // This is useful for live ops and backward compatibility.
         private void SyncDataWithConfig(out bool isDataChanged)
         {
             isDataChanged = false;
@@ -86,7 +91,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
                 {
                     var config = _currencySettings.CurrencyConfigs[missingType];
                     CurrencyDatas[missingType] = new CurrencyData(config.InitialAmount);
-                    Debug.LogWarning($"[CurrencyService] Added missing currency type to data: {missingType}");
+                    Log.Warning($"[CurrencyService] Added missing currency type to data: {missingType}");
                 }
             }
 
@@ -100,7 +105,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
                 foreach (var extraType in extraTypesInData)
                 {
                     CurrencyDatas.Remove(extraType);
-                    Debug.LogWarning($"[CurrencyService] Delete currency types found in data: {extraType}");
+                    Log.Warning($"[CurrencyService] Delete currency types found in data: {extraType}");
                 }
             }
         }
@@ -112,7 +117,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
                 return currencyData.Amount >= amountToCheck;
             }
 
-            Debug.LogWarning($"[CurrencyService] Currency type {currencyType} not found in CurrencyDatas.");
+            Log.Warning($"[CurrencyService] Currency type {currencyType} not found in CurrencyDatas.");
             return false;
         }
 
@@ -124,22 +129,38 @@ namespace _Project.Core.Systems.CurrencySystem.Services
             return true;
         }
 
+        // Deducts the specified amount from the given currency type and saves the change.
         public void Spend(CurrencyType currencyType, int amountToCharge)
         {
-            CurrencyDatas[currencyType].Amount -= amountToCharge;
-            OnCurrencyAmountUpdated?.Invoke(currencyType, CurrencyDatas[currencyType].Amount);
+            if (!CurrencyDatas.TryGetValue(currencyType, out var data))
+            {
+                Log.Warning($"[CurrencyService] Spend failed: {currencyType} not found.");
+                return;
+            }
+
+            data.Amount -= amountToCharge;
+            OnCurrencyAmountUpdated?.Invoke(currencyType, data.Amount);
             SaveAsync().Forget();
         }
 
+        // Adds the specified amount to the given currency type, unlocking if necessary.
         public void Add(CurrencyType currencyType, int amount)
         {
-            if (!CurrencyDatas[currencyType].IsUnlocked) Unlock(currencyType);
-            CurrencyDatas[currencyType].Amount += amount;
-            OnCurrencyAmountUpdated?.Invoke(currencyType, CurrencyDatas[currencyType].Amount);
+            if (!CurrencyDatas.TryGetValue(currencyType, out var data))
+            {
+                Log.Warning($"[CurrencyService] Add failed: {currencyType} not found.");
+                return;
+            }
+
+            if (!data.IsUnlocked) Unlock(currencyType);
+
+            data.Amount += amount;
+            OnCurrencyAmountUpdated?.Invoke(currencyType, data.Amount);
             SaveAsync().Forget();
-            Debug.Log($"[CurrencyService] Added {amount} {currencyType} to player.");
+            Log.Info($"[CurrencyService] Added {amount} {currencyType} to player.");
         }
 
+        // Adds multiple currency rewards at once.
         public void Add(Dictionary<CurrencyType, int> rewards)
         {
             foreach (var reward in rewards)
@@ -148,6 +169,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
             }
         }
 
+        // Sets the amount for a currency type. Optionally saves the change.
         public void SetAmount(CurrencyType currencyType, int amount, bool doSave = true)
         {
             CurrencyDatas[currencyType].Amount = amount;
@@ -155,6 +177,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
             if (doSave) SaveAsync().Forget();
         }
 
+        // Unlocks a currency type, making it available to the player.
         public void Unlock(CurrencyType currencyType, bool doSave = true)
         {
             CurrencyDatas[currencyType].IsUnlocked = true;
@@ -162,6 +185,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
             if (doSave) SaveAsync().Forget();
         }
 
+        // Gets the current amount of the specified currency type.
         public int GetAmount(CurrencyType currencyType)
         {
             if (CurrencyDatas.TryGetValue(currencyType, out CurrencyData currencyData))
@@ -172,16 +196,19 @@ namespace _Project.Core.Systems.CurrencySystem.Services
             return 0;
         }
 
+        // Saves the current currency data to persistent storage.
         private async UniTask SaveAsync()
         {
             await _saveService.SaveAsync(k_saveKey, CurrencyDatas);
         }
 
+        // Returns the icon associated with the given currency type.
         public Sprite GetCurrencyIcon(CurrencyType currencyType)
         {
             return _currencySettings.CurrencyConfigs[currencyType].Icon;
         }
 
+        // Resets all currencies to their default values from config.
         public void Reset()
         {
             InitializeDefaultCurrencyDatas();
