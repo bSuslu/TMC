@@ -104,6 +104,14 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
 
             // Sonraki level'i unlock et
             UnlockNextLevel();
+            
+            // Active level’i yeni açılan level olarak ayarla
+            int nextLevelId = ActiveLevelId + 1;
+            if (nextLevelId <= _levelSettings.LevelCount)
+            {
+                ActiveLevelId = nextLevelId;
+                ActiveLevelConfig = _levelSettings.GetLevelConfig(nextLevelId);
+            }
 
             // Save et
             await SaveAsync();
