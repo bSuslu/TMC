@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6915820845833191968}
   - component: {fileID: 303526584858394423}
   - component: {fileID: -493740264337626591}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: cafe_b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: cafe
   <SpriteRenderer>k__BackingField: {fileID: 303526584858394423}
+  FaceDirection: 0
 --- !u!212 &303526584858394423
 SpriteRenderer:
   m_ObjectHideFlags: 0

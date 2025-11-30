@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using _Project.Core.Framework.EventBus;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using TMC._Project.Gameplay.CityMatch.Scripts.Events;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
 {
@@ -48,7 +50,12 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
         private async UniTask MoveUIItemToSlot(ItemUIEntity itemUIEntity, int index)
         {
             await itemUIEntity.MoveToSlotFromWorld(_relativeSlotPositions[index], _slotSize);
-            CheckMatchAsync().Forget();
+            await CheckMatchAsync();
+            
+            if (!HasEmptySlot())
+            {
+                EventBus<SlotsFullEvent>.Publish(new SlotsFullEvent());
+            }
         }
 
         private int AddOrInsertItem(ItemUIEntity itemUIEntity)
@@ -79,8 +86,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
                 RectTransformUtility.WorldToScreenPoint(cam, worldPosition), cam, out var localPoint);
             return localPoint;
         }
-
-
+        
         private async UniTask CheckMatchAsync()
         {
             if (_items.Count < _matchCount) return;

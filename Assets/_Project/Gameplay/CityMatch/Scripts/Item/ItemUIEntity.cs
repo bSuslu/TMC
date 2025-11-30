@@ -23,8 +23,8 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
 
         public async UniTask MoveToSlotFromWorld(Vector2 slotViewRelativePosition, Vector2 slotSize, Action onFinishCallback = null)
         {
-            var move = _rectTransform.DOAnchorPos(slotViewRelativePosition, .25f).SetEase(Ease.Linear);
-            var size = _rectTransform.DOSizeDelta(slotSize, .2f).SetEase(Ease.Linear);
+            var move = _rectTransform.DOAnchorPos(slotViewRelativePosition, .1f).SetEase(Ease.Linear);
+            var size = _rectTransform.DOSizeDelta(slotSize, .1f).SetEase(Ease.Linear);
             await UniTask.WhenAll(move.ToUniTask(), size.ToUniTask());
             onFinishCallback?.Invoke();
         }
@@ -32,13 +32,13 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
         public void UpdatePosition(Vector2 slotViewRelativePosition)
         {
             if(IsMatched)return;
-            _rectTransform.DOAnchorPos(slotViewRelativePosition, .15f).SetEase(Ease.Linear);
+            _rectTransform.DOAnchorPos(slotViewRelativePosition, .1f).SetEase(Ease.Linear);
         }
 
         public async UniTask MoveForMatch(Vector2 matchPosition)
         {
             IsMatched = true;
-            await _rectTransform.DOAnchorPos(matchPosition, .2f).SetEase(Ease.Linear);
+            await _rectTransform.DOAnchorPos(matchPosition, .1f).SetEase(Ease.Linear);
         }
     }
 }

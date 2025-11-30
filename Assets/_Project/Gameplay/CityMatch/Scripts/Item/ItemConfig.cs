@@ -25,7 +25,8 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
                 EditorUtility.SetDirty(itemEntity.Value);
             }
             EditorUtility.SetDirty(this);
-            
         }
+        
+        public ItemEntity GetItemEntity(IsometricFaceDirection faceDirection) => ItemEntities[faceDirection];
     }
 }

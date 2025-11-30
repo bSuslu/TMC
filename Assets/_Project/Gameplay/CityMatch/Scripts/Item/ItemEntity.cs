@@ -3,6 +3,7 @@ using _Project.Core.Framework.EventBus;
 using _Project.Core.Framework.ServiceLocator;
 using TMC._Project.Gameplay.CityMatch.Scripts.Events;
 using TMC._Project.Gameplay.Common.Scripts.ClickSystem;
+using TMC._Project.Gameplay.Common.Scripts.Enums;
 using UnityEngine;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
@@ -12,6 +13,9 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
         [field: SerializeField] public string Id { get; set; }
         [field: SerializeField] public SpriteRenderer SpriteRenderer { get; private set; }
         public Vector3 Position => transform.position;
+
+        public IsometricFaceDirection FaceDirection;
+        
 
         public static event Action<ItemEntity> OnItemClicked;
 
