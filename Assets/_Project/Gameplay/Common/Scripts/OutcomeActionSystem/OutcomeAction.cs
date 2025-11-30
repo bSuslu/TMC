@@ -1,9 +1,9 @@
 using _Project.Core.Framework.ServiceLocator;
 using UnityEngine;
 
-namespace TMC._Project.Gameplay.Common.Scripts.RewardSystem
+namespace TMC._Project.Gameplay.Common.Scripts.OutcomeActionSystem
 {
-    public abstract class RewardBase : ScriptableObject
+    public abstract class OutcomeAction : ScriptableObject
     {
         public abstract void ApplyReward(ServiceLocator sceneLocator);
     }
