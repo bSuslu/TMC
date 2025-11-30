@@ -1,8 +1,11 @@
 using _Project.Core.Common.Utilities;
 using TMC._Project.Gameplay.Common.Scripts.ClickSystem.ClickBehaviours.Base;
 using TMC._Project.Gameplay.Common.Scripts.Enums;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
 {
