@@ -42,6 +42,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.GameResult
         {
             StopTimer();
             _losePanel.SetActive(true);
+            GivePenalties();
         }
         private void OnAllGoalItemsCollected()
         {
@@ -55,6 +56,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.GameResult
         {
             StopTimer();
             _losePanel.SetActive(true);
+            GivePenalties();
         }
         
         private void StopTimer()
@@ -69,6 +71,15 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.GameResult
 
             foreach (var reward in rewards)
                 reward.ApplyOutcome();
+        }
+        
+        private void GivePenalties()
+        {
+            LevelService levelService = ServiceLocator.Global.Get<LevelService>();
+            var penalties = levelService.ActiveLevelConfig.Penalties;
+
+            foreach (var penalty in penalties)
+                penalty.ApplyOutcome();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.GameResult
         private void Start()
         {
             LevelService levelService = ServiceLocator.Global.Get<LevelService>();
-            var costs = levelService.ActiveLevelConfig.Costs;
+            var costs = levelService.ActiveLevelConfig.Penalties;
 
             foreach (var cost in costs)
             {

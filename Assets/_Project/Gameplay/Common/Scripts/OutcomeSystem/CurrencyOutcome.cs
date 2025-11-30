@@ -20,7 +20,7 @@ namespace TMC._Project.Gameplay.Common.Scripts.OutcomeSystem
             if (Amount >= 0)
                 currencyService.Add(CurrencyType, Amount);
             else
-                currencyService.Spend(CurrencyType, Amount);
+                currencyService.Spend(CurrencyType, -Amount);
         }
 
         public override void SetWidget(BaseWidget widget)

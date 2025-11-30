@@ -15,7 +15,7 @@ namespace TMC._Project.Gameplay.Common.Scripts.OutcomeSystem
             var livesService = ServiceLocator.Global.Get<LivesService>();
             
             if (Amount < 0)
-                livesService.RemoveLives(Amount);
+                livesService.RemoveLives(-Amount);
             else
                 livesService.AddLives(Amount);
         }
