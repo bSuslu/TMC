@@ -76,6 +76,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
         // This is useful for live ops and backward compatibility.
         private void SyncDataWithConfig(out bool isDataChanged)
         {
+            Log.Info("[CurrencyService] SyncDataWithConfig started");
             isDataChanged = false;
             var configKeys = new HashSet<CurrencyType>(_currencySettings.CurrencyConfigs.Keys);
             var dataKeys = new HashSet<CurrencyType>(CurrencyDatas.Keys);
@@ -108,6 +109,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
                     Log.Warning($"[CurrencyService] Delete currency types found in data: {extraType}");
                 }
             }
+            Log.Info("[CurrencyService] SyncDataWithConfig finished");
         }
 
         public bool HasEnoughCurrency(CurrencyType currencyType, int amountToCheck)
@@ -124,6 +126,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
         public bool TrySpend(CurrencyType currencyType, int amountToCharge)
         {
             if (!HasEnoughCurrency(currencyType, amountToCharge)) return false;
+            Log.Info($"[CurrencyService] TrySpend: {currencyType} -> {amountToCharge}");
 
             Spend(currencyType, amountToCharge);
             return true;
@@ -132,6 +135,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
         // Deducts the specified amount from the given currency type and saves the change.
         public void Spend(CurrencyType currencyType, int amountToCharge)
         {
+            Log.Info($"[CurrencyService] Spend started: {currencyType}, amount: {amountToCharge}");
             if (!CurrencyDatas.TryGetValue(currencyType, out var data))
             {
                 Log.Warning($"[CurrencyService] Spend failed: {currencyType} not found.");
@@ -139,6 +143,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
             }
 
             data.Amount -= amountToCharge;
+            Log.Info($"[CurrencyService] Spend completed: {currencyType}, new amount: {data.Amount}");
             OnCurrencyAmountUpdated?.Invoke(currencyType, data.Amount);
             SaveAsync().Forget();
         }
@@ -157,7 +162,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
             data.Amount += amount;
             OnCurrencyAmountUpdated?.Invoke(currencyType, data.Amount);
             SaveAsync().Forget();
-            Log.Info($"[CurrencyService] Added {amount} {currencyType} to player.");
+            Log.Info($"[CurrencyService] Add: {currencyType}, amount: {amount}, new total: {data.Amount}");
         }
 
         // Adds multiple currency rewards at once.
@@ -173,6 +178,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
         public void SetAmount(CurrencyType currencyType, int amount, bool doSave = true)
         {
             CurrencyDatas[currencyType].Amount = amount;
+            Log.Info($"[CurrencyService] SetAmount: {currencyType} -> {amount}");
             OnCurrencyAmountUpdated?.Invoke(currencyType, CurrencyDatas[currencyType].Amount);
             if (doSave) SaveAsync().Forget();
         }
@@ -181,6 +187,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
         public void Unlock(CurrencyType currencyType, bool doSave = true)
         {
             CurrencyDatas[currencyType].IsUnlocked = true;
+            Log.Info($"[CurrencyService] Unlock: {currencyType}");
             OnCurrencyUnlocked?.Invoke(currencyType);
             if (doSave) SaveAsync().Forget();
         }
