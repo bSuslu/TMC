@@ -7,7 +7,9 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.GameResult
     public class ResultUI : MonoBehaviour
     {
         [SerializeField] private Transform _outcomeContainer;
+        
         private Outcome[] _outcomes;
+        
         public void SetOutcomes(Outcome[] outcomes) => _outcomes = outcomes;
 
         protected void Show()
