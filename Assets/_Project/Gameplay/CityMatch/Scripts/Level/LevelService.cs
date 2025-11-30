@@ -4,7 +4,6 @@ using _Project.Core.Systems.LoadingSystem.Interfaces;
 using _Project.Core.Systems.LogSystems;
 using _Project.Core.Systems.SaveSystem.Interfaces;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
 {

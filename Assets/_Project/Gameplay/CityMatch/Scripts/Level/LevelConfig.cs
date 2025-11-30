@@ -8,11 +8,10 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
     {
         [field: SerializeField] public int Id { get; private set; }
         [field: SerializeField] public int DurationInSeconds { get; private set; }
-        [field: SerializeField] public GameObject LevelPrefab { get; private set; }
-        [field: SerializeField] public Sprite BackgroundImage { get; private set; }
         [field: SerializeField] public Outcome[] Rewards { get; private set; }
         [field: SerializeField] public Outcome[] Costs { get; private set; }
-        [field: SerializeField] public LevelItemRequirement[] GoalItems { get; private set; }
+        [field: SerializeField] public GameObject[] Backgrounds { get; set; }
+        [field: SerializeField] public LevelItemRequirement[] GoalItems { get; set; }
         [field: SerializeField] public LevelCameraData InitialCameraData { get; set; }
         [field: SerializeField] public LevelItemPlacementData[] ItemPlacements { get; set; }
     }
