@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using _Project.Core.Common.Bases;
 using _Project.Core.Systems.CurrencySystem.Datas;
-using TMC._Project.Core.Common.Bases;
 using UnityEngine;
 
 namespace _Project.Core.Systems.CurrencySystem.Settings

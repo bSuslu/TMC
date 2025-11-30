@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TMC._Project.Core.Common.Bases
+namespace _Project.Core.Common.Bases
 {
     public abstract class BaseSettings : ScriptableObject
     {

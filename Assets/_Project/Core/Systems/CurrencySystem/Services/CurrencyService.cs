@@ -137,6 +137,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
             CurrencyDatas[currencyType].Amount += amount;
             OnCurrencyAmountUpdated?.Invoke(currencyType, CurrencyDatas[currencyType].Amount);
             SaveAsync().Forget();
+            Debug.Log($"[CurrencyService] Added {amount} {currencyType} to player.");
         }
 
         public void Add(Dictionary<CurrencyType, int> rewards)

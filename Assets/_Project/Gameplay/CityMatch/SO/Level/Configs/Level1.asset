@@ -10,13 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a1b3bdcfa367046f6b169005488cfde9, type: 3}
-  m_Name: LevelConfig_1
+  m_Name: Level1
   m_EditorClassIdentifier: 
   <Id>k__BackingField: 1
   <DurationInSeconds>k__BackingField: 100
   <LevelPrefab>k__BackingField: {fileID: 0}
+  <BackgroundImage>k__BackingField: {fileID: 0}
+  <Rewards>k__BackingField:
+  - {fileID: 11400000, guid: bf1f0ae14fa7b4ec5a2c84f5a588aeec, type: 2}
+  - {fileID: 11400000, guid: 88025b1535d6447a38ad12b60dc768c8, type: 2}
   <GoalItems>k__BackingField:
   - Config: {fileID: 11400000, guid: 4d773a889bd7646ebb7c6294b46aea13, type: 2}
     Amount: 6
   - Config: {fileID: 11400000, guid: 6e6501b12f4594bb9871fea88221a0a2, type: 2}
     Amount: 3
+  <InitialCameraData>k__BackingField:
+    Size: 0
+    Position: {x: 0, y: 0, z: 0}
+  <ItemPlacements>k__BackingField: []

@@ -4,6 +4,7 @@ using _Project.Core.Framework.ServiceLocator;
 using _Project.Core.Systems.TimeSystem.Events;
 using _Project.Core.Systems.TimeSystem.Interfaces;
 using TMC._Project.Gameplay.CityMatch.Scripts.Events;
+using TMC._Project.Gameplay.CityMatch.Scripts.Level;
 using UnityEngine;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts.GameResult
@@ -45,6 +46,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.GameResult
         {
             StopTimer();
             _winPanel.SetActive(true);
+            GiveRewards();
         }
         
         private void OnTimerExpired()
@@ -56,6 +58,15 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.GameResult
         private void StopTimer()
         {
             ServiceLocator.ForSceneOf(this).Get<IGameTimerService>().StopTimer();
+        }
+        
+        private void GiveRewards()
+        {
+            LevelService levelService = ServiceLocator.Global.Get<LevelService>();
+            var rewards = levelService.ActiveLevelConfig.Rewards;
+
+            foreach (var reward in rewards)
+                reward.ApplyReward(ServiceLocator.ForSceneOf(this));
         }
     }
 }

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using TMC._Project.Core.Common.Bases;
+using _Project.Core.Common.Bases;
 using UnityEngine;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts.Item

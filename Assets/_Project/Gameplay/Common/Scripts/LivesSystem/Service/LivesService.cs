@@ -91,6 +91,7 @@ namespace TMC._Project.Gameplay.Common.Scripts.LivesSystem.Service
                 if (Data.CurrentLives == _livesSettings.MaxLives)
                     OnLivesFull?.Invoke();
             }
+            Debug.Log($"[LivesService] trying to add {amount} lives. old lives: {oldLives}, new lives: {Data.CurrentLives}");
         }
 
         public void RemoveLives(int amount)
@@ -106,6 +107,7 @@ namespace TMC._Project.Gameplay.Common.Scripts.LivesSystem.Service
                 if (Data.CurrentLives == 0)
                     OnLivesDepleted?.Invoke();
             }
+            Debug.Log($"[LivesService] trying to remove {amount} lives. old lives: {oldLives}, new lives: {Data.CurrentLives}");
         }
 
         public void SetCurrentLives(int amount)
