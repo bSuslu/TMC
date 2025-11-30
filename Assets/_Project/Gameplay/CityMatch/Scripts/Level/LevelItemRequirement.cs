@@ -1,7 +1,7 @@
 using System;
 using TMC._Project.Gameplay.CityMatch.Scripts.Item;
 
-namespace TMC._Project.Gameplay.CityMatch.Scripts
+namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
 {
     [Serializable]
     public struct LevelItemRequirement

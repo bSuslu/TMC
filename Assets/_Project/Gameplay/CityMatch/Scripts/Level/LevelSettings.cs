@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using TMC._Project.Core.Common.Bases;
 using UnityEngine;
 
 namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
 {
     [CreateAssetMenu(fileName = "LevelSettings", menuName = "SO/Level/Setting")]
-    public class LevelSettings : ScriptableObject
+    public class LevelSettings : BaseSettings
     {
         [field: SerializeField] public List<LevelConfig> LevelConfigs { get; private set; }
         
