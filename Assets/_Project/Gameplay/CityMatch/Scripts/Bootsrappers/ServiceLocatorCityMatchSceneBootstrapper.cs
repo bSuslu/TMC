@@ -4,6 +4,7 @@ using _Project.Core.Framework.ServiceLocator.Bootstrappers;
 using _Project.Core.Systems.LoadingSystem.Events;
 using _Project.Core.Systems.TimeSystem.Interfaces;
 using _Project.Core.Systems.TimeSystem.Services;
+using Cysharp.Threading.Tasks;
 using TMC._Project.Gameplay.CityMatch.Scripts.Level;
 using UnityEngine;
 
@@ -23,7 +24,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Bootsrappers
                 
             var gameTimerService = new GameTimerService();
             ServiceLocator.ForSceneOf(this).Register<IGameTimerService>(gameTimerService);
-            gameTimerService.StartTimerAsync(levelDuration);
+            gameTimerService.StartTimerAsync(levelDuration).Forget();
             
             EventBus<ServicesReadyEvent>.Publish(new ServicesReadyEvent());
         }

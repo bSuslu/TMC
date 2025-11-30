@@ -13,6 +13,7 @@ namespace _Project.Core.Systems.TimeSystem.Services
         private TimerData _currentTimer;
         private bool _isTimerActive = false;
         private float _lastKnownTime;
+
         public event Action<string> OnTimeFormatted;
         public event Action OnTimerStarted;
         public event Action OnTimerExpired;
@@ -42,18 +43,15 @@ namespace _Project.Core.Systems.TimeSystem.Services
                     // Update UI every frame
                     string formattedTime = TimeFormatter.FormatTimeMMSS(_currentTimer.TimeRemaining);
                     OnTimeFormatted?.Invoke(formattedTime);
-
-                    _currentTimer.OnTimerTick?.Invoke(_currentTimer.TimeRemaining);
                 }
 
                 await UniTask.Yield();
             }
 
-            if (_isTimerActive && _currentTimer.TimeRemaining <= 0)
+            if (_isTimerActive && _currentTimer != null && _currentTimer.TimeRemaining <= 0)
             {
                 OnTimerExpired?.Invoke();
                 EventBus<TimeExpiredEvent>.Publish(new TimeExpiredEvent());
-                _currentTimer.OnTimerExpired?.Invoke();
             }
 
             _isTimerActive = false;
@@ -96,10 +94,10 @@ namespace _Project.Core.Systems.TimeSystem.Services
 
         public string GetFormattedTime()
             => TimeFormatter.FormatTimeMMSS(_currentTimer?.TimeRemaining ?? 0f);
-        
+
         public float GetLastTime() => _lastKnownTime;
+
         public string GetLastFormattedTime()
-        => TimeFormatter.FormatTimeMMSS(_lastKnownTime);
-        
+            => TimeFormatter.FormatTimeMMSS(_lastKnownTime);
     }
 }

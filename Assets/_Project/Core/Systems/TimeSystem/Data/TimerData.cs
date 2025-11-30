@@ -7,16 +7,12 @@ namespace _Project.Core.Systems.TimeSystem.Data
     {
         public float Duration;
         public float TimeRemaining;
-        public bool IsRunning;
         public bool IsPaused;
-        public Action OnTimerExpired { get; set; }
-        public Action<float> OnTimerTick { get; set; }
 
         public TimerData(float duration)
         {
             Duration = duration;
             TimeRemaining = duration;
-            IsRunning = false;
             IsPaused = false;
         }
     }
