@@ -3,19 +3,20 @@ using UnityEngine;
 
 namespace TMC._Project.Gameplay.Common.Scripts.ClickSystem
 {
-    public class ClickHandler : MonoBehaviour, IClickHandler
+    public class ClickController : MonoBehaviour, IClickHandler
     {
         [SerializeField] private UnityEngine.Camera _camera;
         [SerializeField] private ItemMatchView _itemMatchView;
         private readonly RaycastHit2D[] _results = new RaycastHit2D[10];
-        private readonly ContactFilter2D _filter = new();
+        [SerializeField] private ContactFilter2D _filter;
+
+        
 
         private void Update()
         {
             if (Input.GetMouseButtonDown(0))
             {
-                int hitCount = Physics2D.Raycast(_camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, _filter,
-                    _results);
+                int hitCount = Physics2D.Raycast(_camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, _filter, _results);
                 if (hitCount <= 0) return;
                 int index = 0;
                 float minY = float.MaxValue;
