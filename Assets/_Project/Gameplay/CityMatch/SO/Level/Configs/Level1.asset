@@ -20,8 +20,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bf1f0ae14fa7b4ec5a2c84f5a588aeec, type: 2}
   - {fileID: 11400000, guid: 88025b1535d6447a38ad12b60dc768c8, type: 2}
   <Costs>k__BackingField:
-  - {fileID: 11400000, guid: e879454a50b434ed7976a61fdeb5bad9, type: 2}
-  - {fileID: 11400000, guid: 8311b5ebe49e242f1b925571697e1618, type: 2}
+  - {fileID: 11400000, guid: d09308296394e4106a8024ea99258a50, type: 2}
+  - {fileID: 11400000, guid: 3e3934fa403164bff9840928a6b11813, type: 2}
   <GoalItems>k__BackingField:
   - Config: {fileID: 11400000, guid: 4d773a889bd7646ebb7c6294b46aea13, type: 2}
     Amount: 6

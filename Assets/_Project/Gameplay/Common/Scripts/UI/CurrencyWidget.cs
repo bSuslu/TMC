@@ -2,17 +2,13 @@ using _Project.Core.Framework.ServiceLocator;
 using _Project.Core.Systems.CurrencySystem.Datas;
 using _Project.Core.Systems.CurrencySystem.Interfaces;
 using _Project.Core.Systems.CurrencySystem.Settings;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace _Project.Core.Systems.CurrencySystem.UI
+namespace TMC._Project.Gameplay.Common.Scripts.UI
 {
-    public class CurrencyWidget : MonoBehaviour
+    public class CurrencyWidget : BaseWidget 
     {
         [SerializeField] private CurrencyType _currencyType;
-        [SerializeField] private Image _icon;
-        [SerializeField] private TextMeshProUGUI _amountText;
         
         private ICurrencyService _currencyService;
         private CurrencySettings _currencySettings;
@@ -24,8 +20,8 @@ namespace _Project.Core.Systems.CurrencySystem.UI
 
             if (_currencySettings.CurrencyConfigs.TryGetValue(_currencyType, out var currencyConfig))
             {
-                _icon.sprite = currencyConfig.Icon;
-                _amountText.text = _currencyService.GetAmount(_currencyType).ToString();
+                Icon.sprite = currencyConfig.Icon;
+                AmountText.text = _currencyService.GetAmount(_currencyType).ToString();
             }
             else
             {
@@ -44,7 +40,7 @@ namespace _Project.Core.Systems.CurrencySystem.UI
         {
             if (currencyType != _currencyType) return;
             
-            _amountText.text = amount.ToString();
+            AmountText.text = amount.ToString();
         }
     }
 }

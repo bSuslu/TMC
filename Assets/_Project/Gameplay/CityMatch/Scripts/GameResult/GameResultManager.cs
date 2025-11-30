@@ -66,7 +66,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.GameResult
             var rewards = levelService.ActiveLevelConfig.Rewards;
 
             foreach (var reward in rewards)
-                reward.ApplyReward(ServiceLocator.ForSceneOf(this));
+                reward.ApplyOutcome();
         }
     }
 }

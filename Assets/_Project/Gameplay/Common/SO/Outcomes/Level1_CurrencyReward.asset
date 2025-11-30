@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1adde33dca44ad68893a08593c625be, type: 3}
   m_Name: Level1_CurrencyReward
   m_EditorClassIdentifier: 
+  ShowOutcomeWidget: 1
+  OutcomeWidgetPrefab: {fileID: 1927479543845899558, guid: a97f5ea2757994a2683e32d541515f18, type: 3}
   CurrencyType: 1
   Amount: 2
