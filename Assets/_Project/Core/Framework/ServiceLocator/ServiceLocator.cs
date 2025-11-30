@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Core.Framework.ServiceLocator.Bootstrappers;
+using _Project.Core.Systems.LogSystems;
 using UnityEditor;
 using UnityEngine;
 
@@ -31,12 +32,12 @@ namespace _Project.Core.Framework.ServiceLocator
         {
             if (_global == this)
             {
-                Debug.LogWarning("ServiceLocator.ConfigureAsGlobal: Already configured as global", this);
+                Log.Warning("ServiceLocator.ConfigureAsGlobal: Already configured as global");
             }
             else if (_global != null)
             {
-                Debug.LogError(
-                    "ServiceLocator.ConfigureAsGlobal: Another ServiceLocator is already configured as global", this);
+                Log.Error(
+                    "ServiceLocator.ConfigureAsGlobal: Another ServiceLocator is already configured as global");
             }
             else
             {
@@ -55,9 +56,8 @@ namespace _Project.Core.Framework.ServiceLocator
 
             if (_sceneContainers.ContainsKey(scene))
             {
-                Debug.LogError(
-                    "ServiceLocator.ConfigureForScene: Another ServiceLocator is already configured for this scene",
-                    this);
+                Log.Error(
+                    "ServiceLocator.ConfigureForScene: Another ServiceLocator is already configured for this scene");
                 return;
             }
 

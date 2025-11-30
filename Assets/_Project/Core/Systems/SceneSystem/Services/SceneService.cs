@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using _Project.Core.Framework.EventBus;
 using _Project.Core.Framework.EventBus.Implementations;
 using _Project.Core.Systems.LoadingSystem.Interfaces;
+using _Project.Core.Systems.LogSystems;
 using _Project.Core.Systems.SceneSystem.Events;
 using _Project.Core.Systems.SceneSystem.SO;
 using Cysharp.Threading.Tasks;
@@ -30,9 +31,9 @@ namespace _Project.Core.Systems.SceneSystem.Services
         
         public async UniTask InitializeAsync()
         {
-            Debug.Log("Initializing SceneService");
+            Log.Info("Initializing SceneService");
             await LoadSceneAsync(_firstSceneTypeToLoad);
-            Debug.Log("SceneService Initialized");
+            Log.Info("SceneService Initialized");
         }
         
         private void OnLoadSceneRequest(LoadSceneRequestEvent loadSceneRequestEvent)
@@ -51,7 +52,7 @@ namespace _Project.Core.Systems.SceneSystem.Services
         {
             if (_isLoading)
             {
-                Debug.LogWarning($"Another Scene is loading.");
+                Log.Warning($"Another Scene is loading.");
                 return;
             }
 
@@ -69,7 +70,7 @@ namespace _Project.Core.Systems.SceneSystem.Services
             AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             if (asyncLoad == null)
             {
-                Debug.LogError($"[Scene Error] Failed to reload scene '{sceneName}'.");
+                Log.Error($"[Scene Error] Failed to reload scene '{sceneName}'.");
                 _isLoading = false;
 
                 EventBus<SceneTransitionCompletedEvent>.Publish(new SceneTransitionCompletedEvent(sceneTypeKey));
@@ -87,7 +88,7 @@ namespace _Project.Core.Systems.SceneSystem.Services
         {
             if (_isLoading || _currentSceneType == sceneTypeKey)
             {
-                Debug.LogWarning($"Scene '{GetSceneName(sceneTypeKey)}' is already loading or loaded.");
+                Log.Warning($"Scene '{GetSceneName(sceneTypeKey)}' is already loading or loaded.");
                 return;
             }
 
@@ -110,7 +111,7 @@ namespace _Project.Core.Systems.SceneSystem.Services
             AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             if (asyncLoad == null)
             {
-                Debug.LogError($"[Scene Error] Failed to load scene '{sceneName}'.");
+                Log.Error($"[Scene Error] Failed to load scene '{sceneName}'.");
                 _isLoading = false;
 
                 EventBus<SceneTransitionCompletedEvent>.Publish(new SceneTransitionCompletedEvent(sceneTypeKey));
@@ -150,7 +151,7 @@ namespace _Project.Core.Systems.SceneSystem.Services
 
             if (!IsSceneInBuildSettings(sceneName))
             {
-                Debug.LogError(
+                Log.Error(
                     $"[Scene Error] The scene '{sceneName}' mapped from enum '{sceneType}' is not added to Build Settings or the name is incorrect.");
             }
 

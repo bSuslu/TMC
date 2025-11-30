@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading;
 using _Project.Core.Systems.LoadingSystem.Interfaces;
+using _Project.Core.Systems.LogSystems;
 using _Project.Core.Systems.SaveSystem.Interfaces;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
@@ -23,12 +24,12 @@ namespace _Project.Core.Systems.SaveSystem.Services
         
         public async UniTask InitializeAsync()
         {
-            Debug.Log("Initializing JsonSaveService");
+            Log.Info("Initializing JsonSaveService");
             
             // SaveData klasörünü oluştur
             await EnsureSaveDirectoryAsync();
             
-            Debug.Log("JsonSaveService Initialized");
+            Log.Info("JsonSaveService Initialized");
         }
 
         public async UniTask<bool> SaveAsync<T>(string relativePath, T data, bool overwrite = true, bool encrypted = false)
@@ -40,7 +41,7 @@ namespace _Project.Core.Systems.SaveSystem.Services
                 // Overwrite kontrolü
                 if (File.Exists(path) && !overwrite)
                 {
-                    Debug.LogWarning($"File already exists at {path} and overwrite is false");
+                    Log.Warning($"File already exists at {path} and overwrite is false");
                     return false;
                 }
 
@@ -53,17 +54,17 @@ namespace _Project.Core.Systems.SaveSystem.Services
                 string json = JsonConvert.SerializeObject(data, Formatting.Indented);
                 await File.WriteAllTextAsync(path, json, _cancellationTokenSource.Token);
                 
-                Debug.Log($"Data saved successfully to: {path}");
+                Log.Info($"Data saved successfully to: {path}");
                 return true;
             }
             catch (OperationCanceledException)
             {
-                Debug.Log("Save operation cancelled");
+                Log.Info("Save operation cancelled");
                 return false;
             }
             catch (Exception e)
             {
-                Debug.LogError($"Unable to save data due to: {e.Message}");
+                Log.Error($"Unable to save data due to: {e.Message}");
                 return false;
             }
         }
@@ -74,7 +75,7 @@ namespace _Project.Core.Systems.SaveSystem.Services
 
             if (!File.Exists(path))
             {
-                Debug.LogWarning($"File does not exist at path: {path}");
+                Log.Warning($"File does not exist at path: {path}");
                 return (false, default);
             }
 
@@ -87,12 +88,12 @@ namespace _Project.Core.Systems.SaveSystem.Services
             }
             catch (OperationCanceledException)
             {
-                Debug.Log("Load operation cancelled");
+                Log.Info("Load operation cancelled");
                 return (false, default);
             }
             catch (Exception e)
             {
-                Debug.LogError($"TryLoad failed: {e.Message}");
+                Log.Error($"TryLoad failed: {e.Message}");
                 return (false, default);
             }
         }
@@ -118,7 +119,7 @@ namespace _Project.Core.Systems.SaveSystem.Services
             }
             catch (Exception e)
             {
-                Debug.LogError($"Unable to load data from file: {path} due to: {e.Message}");
+                Log.Error($"Unable to load data from file: {path} due to: {e.Message}");
                 throw;
             }
         }
@@ -132,16 +133,16 @@ namespace _Project.Core.Systems.SaveSystem.Services
                 if (File.Exists(path))
                 {
                     await UniTask.RunOnThreadPool(() => File.Delete(path));
-                    Debug.Log($"File deleted: {path}");
+                    Log.Info($"File deleted: {path}");
                 }
                 else
                 {
-                    Debug.LogWarning($"File does not exist at path: {path}");
+                    Log.Warning($"File does not exist at path: {path}");
                 }
             }
             catch (Exception e)
             {
-                Debug.LogError($"Delete failed: {e.Message}");
+                Log.Error($"Delete failed: {e.Message}");
                 throw;
             }
         }
@@ -155,16 +156,16 @@ namespace _Project.Core.Systems.SaveSystem.Services
                 if (Directory.Exists(path))
                 {
                     await UniTask.RunOnThreadPool(() => Directory.Delete(path, true));
-                    Debug.Log("All save data deleted");
+                    Log.Info("All save data deleted");
                 }
                 else
                 {
-                    Debug.Log("No save data found.");
+                    Log.Info("No save data found.");
                 }
             }
             catch (Exception e)
             {
-                Debug.LogError($"DeleteAll failed: {e.Message}");
+                Log.Error($"DeleteAll failed: {e.Message}");
                 throw;
             }
         }

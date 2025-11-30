@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Project.Core.Systems.LogSystems;
 using UnityEngine;
 
 namespace _Project.Core.Framework.ServiceLocator
@@ -68,7 +69,7 @@ namespace _Project.Core.Framework.ServiceLocator
 
             if (!_services.TryAdd(type, service))
             {
-                Debug.LogError($"ServiceManager.Register: Service of type {type.FullName} already registered");
+                Log.Error($"ServiceManager.Register: Service of type {type.FullName} already registered");
             }
 
             return service;
@@ -94,7 +95,7 @@ namespace _Project.Core.Framework.ServiceLocator
 
             if (!_services.TryAdd(type, service))
             {
-                Debug.LogError($"ServiceManager.Register: Service of type {type.FullName} already registered");
+                Log.Error($"ServiceManager.Register: Service of type {type.FullName} already registered");
             }
 
             return this;
