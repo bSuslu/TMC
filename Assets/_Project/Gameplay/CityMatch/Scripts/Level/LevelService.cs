@@ -43,17 +43,17 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
                 CreateDefaultLevelData();
                 await SaveAsync();
             }
-            
-            ActiveLevelId = GetLowestUnlockedLevelId();
+
+            ActiveLevelId = GetLowestInCompleteLevelId();
             ActiveLevelConfig = _levelSettings.GetLevelConfig(ActiveLevelId);
         }
 
-        public int GetLowestUnlockedLevelId()
+        public int GetLowestInCompleteLevelId()
         {
             foreach (var levelConfig in _levelSettings.LevelConfigs)
             {
                 var data = GetLevelData(levelConfig.Id);
-                if (data.IsUnlocked)
+                if (data.IsCompleted == false)
                     return data.Id;
             }
 

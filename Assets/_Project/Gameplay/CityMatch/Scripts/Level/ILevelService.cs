@@ -7,7 +7,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
         int ActiveLevelId { get; }
         LevelConfig ActiveLevelConfig { get; }
         UniTask LoadLevelData();
-        int GetLowestUnlockedLevelId();
+        int GetLowestInCompleteLevelId();
         void CreateDefaultLevelData();
         bool StartLevel(int levelId);
         UniTask CompleteLevel();
