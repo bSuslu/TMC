@@ -12,7 +12,7 @@ namespace _Project.Core.Systems.TimeSystem.Services
     {
         private TimerData _currentTimer;
         private bool _isTimerActive = false;
-
+        private float _lastKnownTime;
         public event Action<string> OnTimeFormatted;
         public event Action OnTimerStarted;
         public event Action OnTimerExpired;
@@ -79,6 +79,7 @@ namespace _Project.Core.Systems.TimeSystem.Services
 
         public void StopTimer()
         {
+            _lastKnownTime = _currentTimer.TimeRemaining;
             _isTimerActive = false;
             _currentTimer = null;
         }
@@ -95,5 +96,10 @@ namespace _Project.Core.Systems.TimeSystem.Services
 
         public string GetFormattedTime()
             => TimeFormatter.FormatTimeMMSS(_currentTimer?.TimeRemaining ?? 0f);
+        
+        public float GetLastTime() => _lastKnownTime;
+        public string GetLastFormattedTime()
+        => TimeFormatter.FormatTimeMMSS(_lastKnownTime);
+        
     }
 }

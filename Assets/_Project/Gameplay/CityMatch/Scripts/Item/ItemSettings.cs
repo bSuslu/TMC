@@ -11,7 +11,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
         [SerializeField] private List<ItemConfig> _itemConfigs;
         public Dictionary<string, ItemConfig> ItemConfigs { get; private set; }
         
-        public void Initialize()
+        public override void Initialize()
         {
             ItemConfigs = _itemConfigs.ToDictionary(x => x.Id, x => x);
         }

@@ -11,6 +11,8 @@ namespace _Project.Core.Systems.TimeSystem.Interfaces
         void AddTime(float secondsToAdd);
         float GetRemainingTime();
         string GetFormattedTime();
+        float GetLastTime();
+        string GetLastFormattedTime();
 
         event System.Action<string> OnTimeFormatted;
         event System.Action OnTimerStarted;
