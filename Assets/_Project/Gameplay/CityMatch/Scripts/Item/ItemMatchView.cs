@@ -11,7 +11,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
     {
         [SerializeField] private Camera _camera;
         [field: SerializeField] private RectTransform _itemUIEntityParent;
-        [field: SerializeField] private ItemUIEntity _itemUIEntityPrefab;
+        [SerializeField] private ItemUIEntityPool _itemUIEntityPool;
         [field: SerializeField] private ItemMatchSlot[] _slots;
 
         private readonly int _matchCount = 3;
@@ -20,7 +20,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
         private readonly List<ItemUIEntity> _items = new();
         private void Awake() => ItemEntity.OnItemClicked += OnItemEntityClicked;
         private void OnDestroy() => ItemEntity.OnItemClicked -= OnItemEntityClicked;
-        
+
 
         private bool HasEmptySlot() => _items.Count < _slots.Length;
 
@@ -30,18 +30,19 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
 
             if (!HasEmptySlot()) return;
 
-            var itemUIEntity = Instantiate(_itemUIEntityPrefab, _itemUIEntityParent);
+            var itemUIEntity = _itemUIEntityPool.GetPooledObject();
             itemUIEntity.SetIDAndSprite(entity.Id, entity.Config.Icon);
-            itemUIEntity.transform.localPosition = GetRelativeLocalPointInRectangle(_itemUIEntityParent, entity.Position, _camera);
+            itemUIEntity.transform.localPosition =
+                GetRelativeLocalPointInRectangle(_itemUIEntityParent, entity.Position, _camera);
 
             var screenSize = GetItemUIScaleFromSprite(entity.Position, entity.SpriteRenderer);
             RectTransform rt = itemUIEntity.GetComponent<RectTransform>();
             rt.sizeDelta = new Vector2(Mathf.Abs(screenSize.x), Mathf.Abs(screenSize.y));
 
             int index = AddOrInsertItem(itemUIEntity);
-            
+
             MoveUIItemToSlot(itemUIEntity, index).Forget();
-            
+
             UpdateItemPositions(index);
 
             entity.ClickSuccess();
@@ -51,7 +52,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
         {
             await itemUIEntity.MoveToSlotFromWorld(_relativeSlotPositions[index], _slotSize);
             await CheckMatchAsync();
-            
+
             if (!HasEmptySlot())
             {
                 EventBus<SlotsFullEvent>.Publish(new SlotsFullEvent());
@@ -80,13 +81,14 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
             }
         }
 
-        private Vector2 GetRelativeLocalPointInRectangle(RectTransform referenceRectTransform, Vector3 worldPosition, Camera cam = null)
+        private Vector2 GetRelativeLocalPointInRectangle(RectTransform referenceRectTransform, Vector3 worldPosition,
+            Camera cam = null)
         {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(referenceRectTransform,
                 RectTransformUtility.WorldToScreenPoint(cam, worldPosition), cam, out var localPoint);
             return localPoint;
         }
-        
+
         private async UniTask CheckMatchAsync()
         {
             if (_items.Count < _matchCount) return;
@@ -95,7 +97,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
             {
                 bool allMatch = true;
                 var baseId = _items[i].ItemId;
-                
+
                 for (int j = 0; j < _matchCount; j++)
                 {
                     var item = _items[i + j];
@@ -108,17 +110,17 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
 
                 if (!allMatch)
                     continue;
-                
+
                 var matchItems = _items.GetRange(i, _matchCount);
-                
+
                 await MatchItemsAsync(i);
 
                 foreach (var matchItem in matchItems)
                 {
-                    Destroy(matchItem.gameObject);
+                    _itemUIEntityPool.ReturnObject(matchItem);
                     _items.Remove(matchItem);
                 }
-                
+
                 UpdateItemPositions();
                 return;
             }
@@ -140,6 +142,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
             {
                 center += _relativeSlotPositions[i];
             }
+
             return center / matchCount;
         }
 
@@ -159,7 +162,8 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
             _relativeSlotPositions = new Vector2[_slots.Length];
             for (int i = 0; i < _slots.Length; i++)
             {
-                _relativeSlotPositions[i] = GetRelativeLocalPointInRectangle(_itemUIEntityParent, _slots[i].transform.position, _camera);
+                _relativeSlotPositions[i] =
+                    GetRelativeLocalPointInRectangle(_itemUIEntityParent, _slots[i].transform.position, _camera);
             }
         }
     }

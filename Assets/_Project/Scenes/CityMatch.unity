@@ -1517,7 +1517,7 @@ GameObject:
   - component: {fileID: 762123822}
   - component: {fileID: 762123823}
   m_Layer: 5
-  m_Name: pnl_itemsMatch
+  m_Name: ItemMatchView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1627,7 +1627,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 705922876}
   _itemUIEntityParent: {fileID: 1942249295}
-  _itemUIEntityPrefab: {fileID: 7911243571268053004, guid: 5d052402dfb6449de828774966f0212b, type: 3}
+  _itemUIEntityPool: {fileID: 1942249296}
   _slots:
   - {fileID: 9089810470634273799}
   - {fileID: 458335424}
@@ -2969,8 +2969,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1942249295}
+  - component: {fileID: 1942249296}
   m_Layer: 5
-  m_Name: parent_uiEntity
+  m_Name: ItemUIEntityPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2995,6 +2996,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1942249296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1942249294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd135e9cf613145c9bd9ae7fa2c7f6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 7911243571268053004, guid: 5d052402dfb6449de828774966f0212b, type: 3}
 --- !u!1 &1991413346
 GameObject:
   m_ObjectHideFlags: 0
