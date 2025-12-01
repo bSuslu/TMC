@@ -142,7 +142,7 @@ namespace _Project.Core.Systems.CurrencySystem.Services
                 return;
             }
 
-            data.Amount -= amountToCharge;
+            data.Amount = Mathf.Max(0, data.Amount - amountToCharge);
             Log.Info($"[CurrencyService] Spend completed: {currencyType}, new amount: {data.Amount}");
             OnCurrencyAmountUpdated?.Invoke(currencyType, data.Amount);
             SaveAsync().Forget();
