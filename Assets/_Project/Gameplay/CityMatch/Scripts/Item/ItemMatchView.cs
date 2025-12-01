@@ -52,6 +52,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
         {
             await itemUIEntity.MoveToSlotFromWorld(_relativeSlotPositions[index], _slotSize);
             await CheckMatchAsync();
+            EventBus<CollectableItemCollectedEvent>.Publish(new CollectableItemCollectedEvent(itemUIEntity.ItemId));
 
             if (!HasEmptySlot())
             {

@@ -17,18 +17,18 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.GoalItem
         private readonly Dictionary<string, GoalItemView> _goalItemViews = new();
         private LevelConfig _levelConfig;
         
-        private EventBinding<CollectableItemClickedEvent> _collectableItemClickedEventBinding;
+        private EventBinding<CollectableItemCollectedEvent> _collectableItemCollectedEventBinding;
         
         private void Awake()
         {
             _levelConfig = ServiceLocator.Global.Get<LevelService>().ActiveLevelConfig;
             
-            _collectableItemClickedEventBinding = new EventBinding<CollectableItemClickedEvent>(OnCollectableItemClicked);
-            EventBus<CollectableItemClickedEvent>.Subscribe(_collectableItemClickedEventBinding);
+            _collectableItemCollectedEventBinding = new EventBinding<CollectableItemCollectedEvent>(OnCollectableItemCollected);
+            EventBus<CollectableItemCollectedEvent>.Subscribe(_collectableItemCollectedEventBinding);
         }
         private void OnDestroy()
         {
-            EventBus<CollectableItemClickedEvent>.Unsubscribe(_collectableItemClickedEventBinding);
+            EventBus<CollectableItemCollectedEvent>.Unsubscribe(_collectableItemCollectedEventBinding);
             EventBus<AllGoalItemsCollectedEvent>.Clear();
         }
         
@@ -44,7 +44,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.GoalItem
             }
         }
 
-        private void OnCollectableItemClicked(CollectableItemClickedEvent collectableItemClickedEvent)
+        private void OnCollectableItemCollected(CollectableItemCollectedEvent collectableItemClickedEvent)
         {
             if (_goalItemModels.TryGetValue(collectableItemClickedEvent.ItemId, out var goalItemModel))
             {
