@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: barn_red
   <SpriteRenderer>k__BackingField: {fileID: 303526584858394423}
-  FaceDirection: 0
+  FaceDirection: 1
 --- !u!212 &303526584858394423
 SpriteRenderer:
   m_ObjectHideFlags: 0

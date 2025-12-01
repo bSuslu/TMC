@@ -7,7 +7,6 @@ namespace TMC._Project.Gameplay.Common.Scripts.ClickSystem.ClickBehaviours
     [CreateAssetMenu(menuName = "SO/Click Behaviours/Collect Behaviour")]
     public class CollectBehaviour : ClickBehaviour
     {
-    
         public override void Execute(ItemEntity clickedObject)
         {
             // EventBus<CollectableItemClickedEvent>.Publish(new CollectableItemClickedEvent(Config.Id));

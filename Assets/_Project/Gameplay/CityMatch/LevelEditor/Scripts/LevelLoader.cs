@@ -2,6 +2,7 @@
 using NaughtyAttributes;
 using TMC._Project.Gameplay.CityMatch.Scripts.Item;
 using TMC._Project.Gameplay.CityMatch.Scripts.Level;
+using UnityEditor;
 using UnityEngine;
 
 namespace TMC._Project.Gameplay.CityMatch.LevelEditor.Scripts
@@ -80,8 +81,9 @@ namespace TMC._Project.Gameplay.CityMatch.LevelEditor.Scripts
             foreach (var placementData in placementsData)
             {
                 var itemConfig = _itemSettings.GetItemConfigEditor(placementData.ItemId);
-                var itemInstance = Instantiate(itemConfig.GetItemEntity(placementData.FaceDirection), _itemParent);
-                itemInstance.transform.localPosition = placementData.Position;
+                var itemEntity = PrefabUtility.InstantiatePrefab(itemConfig.GetItemEntity(placementData.FaceDirection)) as ItemEntity;
+                itemEntity.transform.SetParent(_itemParent);
+                itemEntity.transform.localPosition = placementData.Position;
             }
         }
 
@@ -101,9 +103,10 @@ namespace TMC._Project.Gameplay.CityMatch.LevelEditor.Scripts
 
         private void CleanOldItems()
         {
-            foreach (Transform child in _itemParent)
+            int childCount = _itemParent.childCount;
+            for (int i = childCount - 1; i >= 0; i--)
             {
-                DestroyImmediate(child.gameObject);
+                DestroyImmediate(_itemParent.GetChild(i).gameObject);
             }
         }
 
@@ -147,6 +150,8 @@ namespace TMC._Project.Gameplay.CityMatch.LevelEditor.Scripts
                 };
                 levelConfig.ItemPlacements[i] = placementData;
             }
+            
+            EditorUtility.SetDirty(levelConfig);
         }
 
         private void ValidateItemPlacements()

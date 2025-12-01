@@ -115,6 +115,7 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Item
 
                 await MatchItemsAsync(i);
 
+                
                 foreach (var matchItem in matchItems)
                 {
                     _itemUIEntityPool.ReturnObject(matchItem);

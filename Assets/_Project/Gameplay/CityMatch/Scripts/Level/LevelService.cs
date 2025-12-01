@@ -101,7 +101,8 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
 
             // Update level data
             levelData.IsCompleted = true;
-
+            Log.Info($"LevelService: Level {ActiveLevelId} completed.");
+            
             // Sonraki level'i unlock et
             UnlockNextLevel();
             
@@ -115,8 +116,6 @@ namespace TMC._Project.Gameplay.CityMatch.Scripts.Level
 
             // Save et
             await SaveAsync();
-
-            Log.Info($"LevelService: Level {ActiveLevelId} completed.");
         }
 
         public LevelData GetLevelData(int levelId)
